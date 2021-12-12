@@ -14,6 +14,10 @@ const run = () => {
     console.timeEnd('test')
   })
 
+  document.addEventListener('keyup', (event) => {
+    game.keyReleased(event.key)
+  })
+
   // TODO: add touch event listeners for each button div
 }
 

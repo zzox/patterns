@@ -31,6 +31,7 @@ export class Game {
 
     createElements(items)
 
+    this.tapButtons = Array.from(document.querySelectorAll('.tap-button'))
     this.hitElements = Array.from(document.querySelectorAll('.item-row'))
     this.scrollBox = document.getElementById('scroll-box')
 
@@ -45,16 +46,13 @@ export class Game {
   }
 
   update (time) {
-    // attempt 1:
     const scrollDist = this.scrollBox.scrollTop - this.scrollPos
-    console.log(scrollDist)
     if (scrollDist < 2) {
       this.scrollBox.scrollTop = this.scrollPos
     } else {
       this.scrollBox.scrollTop -= scrollDist / 2
     }
 
-    // update scroll position
     requestAnimationFrame(this.update.bind(this))
   }
 
@@ -89,6 +87,15 @@ export class Game {
     const keyPressed = keyMap[key]
     if (keyPressed) {
       this.handlePressed(keyPressed)
+      // shift one for element
+      this.tapButtons[keyPressed - 1].classList.add('pressed')
+    }
+  }
+
+  keyReleased (key) {
+    const keyReleased = keyMap[key]
+    if (keyReleased) {
+      this.tapButtons[keyReleased - 1].classList.remove('pressed')
     }
   }
 
