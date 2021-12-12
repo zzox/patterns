@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>patterns</title>
+    <style>
+        :root {
+            --bg1: #000000;
+            --bg2: #222034;
+            --text-color: #cbdbfc;
+            --highlight-color: #5b6ee1;
+            --one-eighth-height: calc(100vh / 8);
+            --one-sixteenth-height: calc(100vh / 16);
+        }
+
+        body {
+            background-color: var(--bg1);
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        main {
+            max-width: 512px;
+            width: 100vh;
+            background-color: var(--bg2);
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .scroll-box {
+            flex-grow: 2;
+            overflow-y: scroll;
+        }
+
+        .bottom-row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .tap-button {
+            height: var(--one-eighth-height);
+            flex-basis: 25%;
+            border: var(--bg1) 2px solid;
+            /* background-color: var(--button-color); */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .item-row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .item {
+            height: var(--one-eighth-height);
+            flex-basis: 25%;
+            border: var(--bg1) 2px solid;
+            /* background-color: var(--button-color); */
+        }
+
+        .clear-scroll {
+            height: 100vh;
+            width: 100%;
+            border: var(--bg2) 2px solid;
+            /* background-color: var(--button-color); */
+        }
+
+        .highlight {
+            background-color: var(--highlight-color);
+        }
+
+        .hit {
+            background-color: var(--bg2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <main id="main">
+            <div id="scroll-box" class="scroll-box"></div>
+            <div class="bottom-row">
+                <div class="tap-button">A</div>
+                <div class="tap-button">S</div>
+                <div class="tap-button">D</div>
+                <div class="tap-button">F</div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
