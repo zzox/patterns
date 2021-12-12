@@ -13,6 +13,8 @@
             --one-sixteenth-height: calc(100vh / 16);
         }
 
+
+
         body {
             background-color: var(--bg1);
             color: var(--text-color);
@@ -37,6 +39,13 @@
         .scroll-box {
             flex-grow: 2;
             overflow-y: scroll;
+            overflow-x: hidden;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .scroll-box::-webkit-scrollbar {
+            display: none;
         }
 
         .bottom-row {
