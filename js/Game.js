@@ -23,12 +23,13 @@ const createElements = (items) => {
 const keyMap = { 'a': 1, 's': 2, 'd': 3, 'f': 4 }
 
 export class Game {
-  constructor (pattern, repetitions, limit) {
+  constructor ({ pattern, repetitions, limit }) {
     let items = []
     for (let i = 0; i < repetitions; i++) {
       items = [...items, ...pattern]
     }
 
+    removeChildElements(document.getElementById('scroll-box'))
     createElements(items)
 
     this.tapButtons = Array.from(document.querySelectorAll('.tap-button'))

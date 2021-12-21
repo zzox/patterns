@@ -9,4 +9,5 @@ export const makeDiv = (className) => {
 export const removeChildElements = (element) => {
   // get children
   // call remove
+  Array.from(element.children).map((el) => el.remove())
 }
