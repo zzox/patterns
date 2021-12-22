@@ -31,7 +31,7 @@ const run = () => {
     }
 
     // HACK: allow tweening of start menu opacity
-    setTimeout(() => startMenu.remove(), 250);
+    setTimeout(() => startMenu.remove(), 125);
   }
   // TODO: add touch event listeners for each button div
 }

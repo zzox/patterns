@@ -1,155 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-    <title>patterns</title>
-    <style>
-        :root {
-            --bg1: #000000;
-            --bg2: #222034;
-            --text-color: #cbdbfc;
-            --highlight-color: #5b6ee1;
-            --one-eighth-height: calc(100vh / 8);
-            --one-sixteenth-height: calc(100vh / 16);
-        }
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+  <title>patterns</title>
+  <style>
+    :root {
+      --bg1: #000000;
+      --bg2: #222034;
+      --text-color: #cbdbfc;
+      --highlight-color: #5b6ee1;
+      --one-eighth-height: calc(100vh / 8);
+      --one-sixteenth-height: calc(100vh / 16);
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            background-color: var(--bg1);
-            color: var(--text-color);
-            margin: 0;
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      background-color: var(--bg1);
+      color: var(--text-color);
+      margin: 0;
+    }
 
-        .container {
-            display: flex;
-            justify-content: center;
-            height: 100vh;
-        }
+    .container {
+      display: flex;
+      justify-content: center;
+      height: 100vh;
+    }
 
-        main {
-            max-width: 512px;
-            width: 100vh;
-            background-color: var(--bg2);
+    main {
+      max-width: 512px;
+      width: 100vh;
+      background-color: var(--bg2);
+      display: flex;
+      flex-direction: column;
+    }
 
-            display: flex;
-            flex-direction: column;
-        }
+    .modal {
+      position: absolute;
+      background-color: var(--bg2);
+      height: 100vh;
+      opacity: 1;
+      transition: opacity 250ms, background-color 250ms;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .modal {
-            position: absolute;
-            background-color: var(--bg2);
-            height: 100vh;
-            opacity: 1;
-            transition: opacity 250ms, background-color 250ms;
-            align-items: center;
-            justify-content: center;
-        }
+    a {
+      color: var(--text-color);
+    }
 
-        a {
-            color: var(--text-color);
-        }
+    p {
+      font-size: 1.5rem;
+    }
 
-        p {
-            font-size: 1.5rem;
-        }
+    h1 {
+      font-size: 3rem;
+    }
 
-        h1 {
-            font-size: 3rem;
-        }
+    button {
+      background-color: inherit;
+      color: var(--text-color);
+      font-size: 1.5rem;
+      padding: 1rem;
+      border: var(--text-color) 2px solid;
+      border-radius: 0.75rem;
+      cursor: pointer;
+    }
 
-        button {
-            background-color: inherit;
-            color: var(--text-color);
-            font-size: 1.5rem;
-            padding: 1rem;
-            border: var(--text-color) 2px solid;
-            border-radius: 0.75rem;
-            cursor: pointer;
-        }
+    .scroll-box {
+      flex-grow: 2;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
 
-        .scroll-box {
-            flex-grow: 2;
-            overflow-y: scroll;
-            overflow-x: hidden;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+    .scroll-box::-webkit-scrollbar {
+      display: none;
+    }
 
-        .scroll-box::-webkit-scrollbar {
-            display: none;
-        }
+    .bottom-row {
+      display: flex;
+      flex-direction: row;
+    }
 
-        .bottom-row {
-            display: flex;
-            flex-direction: row;
-        }
+    .tap-button {
+      height: var(--one-eighth-height);
+      flex-basis: 25%;
+      border: var(--bg1) 2px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      transition: font-size 50ms, background-color 50ms;
+    }
 
-        .tap-button {
-            height: var(--one-eighth-height);
-            flex-basis: 25%;
-            border: var(--bg1) 2px solid;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            transition: font-size 50ms, background-color 50ms;
-        }
+    .pressed {
+      font-size: 2.5rem;
+      background-color: var(--highlight-color);
+    }
 
-        .pressed {
-            font-size: 2.5rem;
-            background-color: var(--highlight-color);
-        }
+    .item-row {
+      display: flex;
+      flex-direction: row;
+    }
 
-        .item-row {
-            display: flex;
-            flex-direction: row;
-        }
+    .item {
+      height: var(--one-eighth-height);
+      flex-basis: 25%;
+      border: var(--bg1) 2px solid;
+    }
 
-        .item {
-            height: var(--one-eighth-height);
-            flex-basis: 25%;
-            border: var(--bg1) 2px solid;
-        }
+    .clear-scroll {
+      height: 100vh;
+      width: 100%;
+      border: var(--bg2) 2px solid;
+    }
 
-        .clear-scroll {
-            height: 100vh;
-            width: 100%;
-            border: var(--bg2) 2px solid;
-        }
+    .highlight {
+      background-color: var(--highlight-color);
+    }
 
-        .highlight {
-            background-color: var(--highlight-color);
-        }
-
-        .hit {
-            background-color: var(--bg2);
-        }
-    </style>
+    .hit {
+      background-color: var(--bg2);
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <main id="main">
-            <div id="scroll-box" class="scroll-box"></div>
-            <div class="bottom-row">
-                <div class="tap-button">A</div>
-                <div class="tap-button">S</div>
-                <div class="tap-button">D</div>
-                <div class="tap-button">F</div>
-            </div>
-        </main>
-        <main class="modal" id="intro">
-            <h1>Patterns</h1>
-            <p>A game by
-                <a href="https://twitter.com/zzo__x" rel="noopener noreferrer" target="_blank">zzox</a>
-                (tyler)
-            </p>
-            <button id="start">Click to start.</button>
-        </main>
-        <!-- <main class="modal" id="popup">
-            <h1></h1>
-            <p></p>
-        </main> -->
-    </div>
-    <script type="module" src="js/main.js"></script>
+  <div class="container">
+    <main id="main">
+      <div id="scroll-box" class="scroll-box"></div>
+      <div class="bottom-row">
+        <div class="tap-button">A</div>
+        <div class="tap-button">S</div>
+        <div class="tap-button">D</div>
+        <div class="tap-button">F</div>
+      </div>
+    </main>
+      <main class="modal" id="intro">
+        <h1>Patterns</h1>
+        <p>A game by
+          <a href="https://twitter.com/zzo__x" rel="noopener noreferrer" target="_blank">zzox</a>
+          (tyler)
+        </p>
+        <button id="start">Click to start.</button>
+      </main>
+    <!-- <main class="modal" id="popup">
+        <h1></h1>
+        <p></p>
+    </main> -->
+  </div>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
