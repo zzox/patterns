@@ -1,6 +1,7 @@
 import { challenges } from './challenges.js'
 import { Game } from './Game.js'
-import { showModal, timeToDisplay } from './utils.js'
+import State from './State.js'
+import { showModal, sleep, timeToDisplay } from './utils.js'
 
 console.log('loaded')
 
@@ -9,12 +10,18 @@ const startMenu = document.getElementById('intro')
 let game
 
 const win = (time) => {
-  showModal('Win!', timeToDisplay(time))
+  showModal('Win!', `${timeToDisplay(time)}<small>ms</small>`)
   game = null
 }
 
-const lose = () => {
+const lose = async () => {
+  await sleep(1000)
   showModal('Lose...')
+}
+
+const startChallenge = (index) => {
+  game = new Game(challenges[index], win, lose)
+  startMenu.style.opacity = 0
 }
 
 // TODO: turn the following into a class
@@ -37,8 +44,7 @@ const run = () => {
 
   startButton.onclick = () => {
     if (!game) {
-      game = new Game(challenges[0], win, lose)
-      startMenu.style.opacity = 0
+      startChallenge(0)
     }
 
     // HACK: allow tweening of start menu opacity

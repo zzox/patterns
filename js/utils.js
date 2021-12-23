@@ -16,7 +16,7 @@ export const removeChildElements = (element) => {
 export const showModal = (title, subtext = '', buttons = []) => {
   removeChildElements(modalButtons)
   modalElement.children[0].innerText = title
-  modalElement.children[1].innerText = subtext
+  modalElement.children[1].innerHTML = subtext
   modalElement.style.visibility = 'visible';
   modalElement.style.opacity = 1;
 
@@ -28,4 +28,6 @@ export const showModal = (title, subtext = '', buttons = []) => {
   })
 }
 
-export const timeToDisplay = (time) => time.toFixed(3)
+export const timeToDisplay = (time) => (time / 1000).toFixed(3)
+
+export const sleep = (time) => new Promise((res) => setTimeout(res, time))
