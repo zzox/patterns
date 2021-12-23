@@ -123,6 +123,11 @@
     .hit {
       background-color: var(--bg2);
     }
+
+    #popup {
+      visibility: hidden;
+      opacity: 0;
+    }
   </style>
 </head>
 <body>
@@ -136,18 +141,19 @@
         <div class="tap-button">F</div>
       </div>
     </main>
-      <main class="modal" id="intro">
-        <h1>Patterns</h1>
-        <p>A game by
-          <a href="https://twitter.com/zzo__x" rel="noopener noreferrer" target="_blank">zzox</a>
-          (tyler)
-        </p>
-        <button id="start">Click to start.</button>
-      </main>
-    <!-- <main class="modal" id="popup">
-        <h1></h1>
-        <p></p>
-    </main> -->
+    <main class="modal" id="intro">
+      <h1>Patterns</h1>
+      <p>A game by
+        <a href="https://twitter.com/zzo__x" rel="noopener noreferrer" target="_blank">zzox</a>
+        (tyler)
+      </p>
+      <button id="start">Click to start.</button>
+    </main>
+    <main class="modal" id="popup">
+      <h1></h1>
+      <p></p>
+      <div id="popup-buttons"></div>
+    </main>
   </div>
   <script type="module" src="js/main.js"></script>
 </body>

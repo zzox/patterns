@@ -23,7 +23,7 @@ const createElements = (items) => {
 const keyMap = { 'a': 1, 's': 2, 'd': 3, 'f': 4 }
 
 export class Game {
-  constructor ({ pattern, repetitions, limit }) {
+  constructor ({ pattern, repetitions, limit }, win, lose) {
     let items = []
     for (let i = 0; i < repetitions; i++) {
       items = [...items, ...pattern]
@@ -43,6 +43,9 @@ export class Game {
     this.startTime = null
     this.results = []
 
+    this.winCallback = win
+    this.loseCallback = lose
+
     this.update(0)
   }
 
@@ -58,9 +61,12 @@ export class Game {
   }
 
   handlePressed (key) {
+    if (this.gameOver) return
+
     const item = this.items.shift()
     if (item !== key) {
-      throw new Error('Lose!')
+      this.gameOver = true
+      this.loseCallback()
     } else {
       // on first keypress, we start
       // TODO: first correct keypress?
@@ -75,8 +81,9 @@ export class Game {
 
       if (!this.items.length) {
         console.log(this.results)
-        this.scrollPos = 0;
-        throw new Error(`Won! ${Date.now() - this.startTime}`)
+        this.scrollPos = 0
+        this.gameOver = true
+        this.winCallback(Date.now() - this.startTime)
       } else {
         // set the scroll to the next elements top + plus its height (to get it's bottom) and then subtract that by view height
         this.scrollPos = this.hitElements[this.items.length - 1].offsetTop + this.hitElements[this.items.length - 1].clientHeight - this.scrollBox.offsetHeight
