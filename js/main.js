@@ -15,7 +15,7 @@ const win = (time) => {
 }
 
 const lose = async () => {
-  await sleep(1000)
+  await sleep(500)
   showModal('Lose...')
 }
 

@@ -9,6 +9,7 @@
       --bg2: #222034;
       --text-color: #cbdbfc;
       --highlight-color: #5b6ee1;
+      --error-color: #bb1414;
       --one-eighth-height: calc(100vh / 8);
       --one-sixteenth-height: calc(100vh / 16);
     }
@@ -132,9 +133,13 @@
       background-color: var(--bg2);
     }
 
+    .missed {
+      background-color: var(--error-color);
+    }
+
     #popup {
       visibility: hidden;
-      opacity: 0;
+      background-color: initial;
     }
   </style>
 </head>
@@ -151,11 +156,11 @@
     </main>
     <main class="modal" id="intro">
       <h1>Patterns</h1>
-      <p>A game by
+      <p>A tapping game by
         <a href="https://twitter.com/zzo__x" rel="noopener noreferrer" target="_blank">zzox</a>
         (tyler)
       </p>
-      <button id="start">Click to start.</button>
+      <button id="start">Click to start</button>
     </main>
     <main class="modal" id="popup">
       <h1></h1>

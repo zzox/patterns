@@ -41,6 +41,7 @@ export class Game {
     this.items = items
     this.limit = limit
     this.startTime = null
+    this.gameOver = false
     this.results = []
 
     this.winCallback = win
@@ -67,6 +68,7 @@ export class Game {
     if (item !== key) {
       this.gameOver = true
       this.loseCallback()
+      return false
     } else {
       // on first keypress, we start
       // TODO: first correct keypress?
@@ -88,21 +90,28 @@ export class Game {
         // set the scroll to the next elements top + plus its height (to get it's bottom) and then subtract that by view height
         this.scrollPos = this.hitElements[this.items.length - 1].offsetTop + this.hitElements[this.items.length - 1].clientHeight - this.scrollBox.offsetHeight
       }
+
+      return true
     }
   }
 
   keyPressed (key) {
     const keyPressed = keyMap[key]
-    if (keyPressed) {
-      this.handlePressed(keyPressed)
-      // shift one for element
-      this.tapButtons[keyPressed - 1].classList.add('pressed')
+    if (keyPressed && !this.gameOver) {
+      const correctPress = this.handlePressed(keyPressed)
+      if (correctPress) {
+        // shift one for element
+        this.tapButtons[keyPressed - 1].classList.add('pressed')
+      } else {
+        this.tapButtons[keyPressed - 1].classList.add('missed')
+        Array.from(this.hitElements[this.items.length].children)[keyPressed - 1].classList.add('missed')
+      }
     }
   }
 
   keyReleased (key) {
     const keyReleased = keyMap[key]
-    if (keyReleased) {
+    if (keyReleased && !this.gameOver) {
       this.tapButtons[keyReleased - 1].classList.remove('pressed')
     }
   }
