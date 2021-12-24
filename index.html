@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lexend">
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
   <title>patterns</title>
   <style>
@@ -15,7 +16,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      font-family: "Lexend", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
       background-color: var(--bg1);
       color: var(--text-color);
       margin: 0;
@@ -73,6 +74,14 @@
       border: var(--text-color) 2px solid;
       border-radius: 0.75rem;
       cursor: pointer;
+    }
+
+    button:hover {
+      background-color: var(--text-color);
+      color: var(--bg2);
+      font-size: 1.5rem;
+      padding: 1rem;
+      border: var(--bg2) 2px solid;
     }
 
     .scroll-box {
@@ -141,6 +150,13 @@
       visibility: hidden;
       background-color: initial;
     }
+
+    #menu {
+      position: absolute;
+      background-color: var(--bg2);
+      opacity: 0;
+      transition: opacity 250ms;
+    }
   </style>
 </head>
 <body>
@@ -168,6 +184,7 @@
       <p></p>
       <div id="popup-buttons"></div>
     </main>
+    <main id="menu"></main>
   </div>
   <script type="module" src="js/main.js"></script>
 </body>
