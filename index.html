@@ -10,6 +10,8 @@
       --bg2: #222034;
       --text-color: #cbdbfc;
       --highlight-color: #5b6ee1;
+      --highlight-color-2: #332e5f;
+      --non-playable-color: #465574;
       --error-color: #bb1414;
       --one-eighth-height: calc(100vh / 8);
       --one-sixteenth-height: calc(100vh / 16);
@@ -156,6 +158,38 @@
       background-color: var(--bg2);
       opacity: 0;
       transition: opacity 250ms;
+    }
+
+    .menu-item {
+      margin: 0.5rem;
+      padding: 0.5rem;
+      border: var(--text-color) 2px solid;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .menu-item > * {
+      padding: 0.0rem;
+      /* wrap hack */
+      flex-basis: 34%;
+      margin: 0rem;
+    }
+
+    .menu-item:hover {
+      background-color: var(--highlight-color-2);
+    }
+
+    .non-playable {
+      cursor: initial;
+      border: var(--non-playable-color) 2px solid;
+      color: var(--non-playable-color);
+    }
+
+    .non-playable:hover {
+      background-color: var(--bg2);
     }
   </style>
 </head>

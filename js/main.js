@@ -1,7 +1,8 @@
 import { challenges } from './challenges.js'
 import { Game } from './Game.js'
+import { createMenu } from './menu.js'
 import State from './State.js'
-import { showModal, sleep, timeToDisplay } from './utils.js'
+import { removeChildElements, showModal, sleep, timeToDisplay } from './utils.js'
 
 console.log('loaded')
 
@@ -22,6 +23,7 @@ const lose = async () => {
 const startChallenge = (index) => {
   game = new Game(challenges[index], win, lose)
   startMenu.style.opacity = 0
+  removeChildElements(document.getElementById('menu'))
 }
 
 // TODO: turn the following into a class
@@ -39,16 +41,20 @@ const run = () => {
   })
 
   document.addEventListener('keyup', (event) => {
-    game.keyReleased(event.key)
+    try {
+      game.keyReleased(event.key)
+    } catch (e) {
+      console.warn(e)
+    }
   })
 
   startButton.onclick = () => {
     if (!game) {
-      startChallenge(0)
+      createMenu(startChallenge)
     }
 
     // HACK: allow tweening of start menu opacity
-    setTimeout(() => startMenu.remove(), 125);
+    setTimeout(() => startMenu.remove(), 125)
   }
 
   // TODO: add touch event listeners for each button div
