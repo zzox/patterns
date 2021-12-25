@@ -31,6 +31,8 @@ const run = () => {
   document.addEventListener('keydown', (event) => {
     console.time('[patterns] - keydown timer')
 
+    if (event.repeat) return
+
     try {
       game.keyPressed(event.key)
     } catch (e) {
