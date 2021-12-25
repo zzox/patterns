@@ -38,6 +38,6 @@ export const hideModal = async () => {
 }
 
 export const timeToDisplay = (time) =>
-  (time / 1000).toFixed(3).split('.').join('\'<small>') + "\"</small>"
+  (time / 1000).toFixed(3).split('.').join('\'<small>') + '\"</small>'
 
-export const sleep = (time) => new Promise((res) => setTimeout(res, time))
+export const sleep = (time) => new Promise((res, rej) => setTimeout(res, time))

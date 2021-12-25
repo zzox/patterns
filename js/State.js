@@ -32,4 +32,4 @@ class State {
   }
 }
 
-export default { instance: new State }
+export default { instance: new State() }
