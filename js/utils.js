@@ -23,9 +23,18 @@ export const showModal = (title, subtext = '', buttons = []) => {
   buttons.forEach(({ text, callback }) => {
     const button = document.createElement('button')
     button.innerText = text
-    button.onclick = callback
+    button.onclick = () => {
+      hideModal()
+      callback()
+    }
     modalElement.appendChild(button)
   })
+}
+
+export const hideModal = async () => {
+  modalElement.style.opacity = 0
+  await sleep(125)
+  modalElement.style.visibility = 'hidden'
 }
 
 export const timeToDisplay = (time) =>

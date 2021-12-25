@@ -21,7 +21,7 @@ const lose = async () => {
 }
 
 const startChallenge = (index) => {
-  game = new Game(challenges[index], win, lose)
+  game = new Game(challenges[index], index, win, lose)
   startMenu.style.opacity = 0
   hideMenu()
 }

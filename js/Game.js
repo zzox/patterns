@@ -1,3 +1,4 @@
+import State from './State.js'
 import { makeDiv, removeChildElements, timeToDisplay } from './utils.js'
 
 const OPTIONS = 4
@@ -29,7 +30,7 @@ const createTimer = () => {
 const keyMap = { 'a': 1, 's': 2, 'd': 3, 'f': 4 }
 
 export class Game {
-  constructor ({ pattern, repetitions, limit }, win, lose) {
+  constructor ({ pattern, repetitions, limit }, levelIndex, win, lose) {
     let items = []
     for (let i = 0; i < repetitions; i++) {
       items = [...items, ...pattern]
@@ -47,6 +48,7 @@ export class Game {
 
     this.items = items
     this.limit = limit
+    this.levelIndex = levelIndex
     this.startTime = null
     this.endTime = null
     this.gameOver = false
@@ -105,6 +107,7 @@ export class Game {
         this.endTime = currentTime
         this.scrollPos = 0
         this.gameOver = true
+        State.instance.winChallenge({ index: this.levelIndex, time: currentTime })
         this.winCallback(currentTime)
       } else {
         // set the scroll to the next elements top + plus its height (to get it's bottom) and then subtract that by view height
