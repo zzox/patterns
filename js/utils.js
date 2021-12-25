@@ -17,8 +17,8 @@ export const showModal = (title, subtext = '', buttons = []) => {
   removeChildElements(modalButtons)
   modalElement.children[0].innerText = title
   modalElement.children[1].innerHTML = subtext
-  modalElement.style.visibility = 'visible';
-  modalElement.style.opacity = 1;
+  modalElement.style.visibility = 'visible'
+  modalElement.style.opacity = 1
 
   buttons.forEach(({ text, callback }) => {
     const button = document.createElement('button')

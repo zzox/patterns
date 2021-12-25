@@ -1,6 +1,6 @@
 import { challenges } from './challenges.js'
 import { Game } from './Game.js'
-import { createMenu } from './menu.js'
+import { createMenu, hideMenu } from './menu.js'
 import State from './State.js'
 import { removeChildElements, showModal, sleep, timeToDisplay } from './utils.js'
 
@@ -23,7 +23,7 @@ const lose = async () => {
 const startChallenge = (index) => {
   game = new Game(challenges[index], win, lose)
   startMenu.style.opacity = 0
-  removeChildElements(document.getElementById('menu'))
+  hideMenu()
 }
 
 // TODO: turn the following into a class

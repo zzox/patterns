@@ -1,10 +1,12 @@
 import { challenges } from './challenges.js'
 import State from './State.js'
+import { sleep } from './utils.js'
 
 const menu = document.getElementById('menu')
 
 export const createMenu = (callback) => {
   menu.style.opacity = 1
+  menu.style.visibility = 'visible'
   challenges.forEach((challenge, i) => {
     const complete = i <= State.instance.completedChallenges.length - 1
     const playable = i <= State.instance.completedChallenges.length
@@ -34,4 +36,11 @@ export const createMenu = (callback) => {
 
     div.onclick = () => playable ? callback(i) : () => {}
   })
+}
+
+export const hideMenu = async () => {
+  menu.style.opacity = 0
+  await sleep(125)
+  menu.style.visibility = 'hidden'
+  removeChildElements(menu)
 }
