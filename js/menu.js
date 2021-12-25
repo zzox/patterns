@@ -1,6 +1,6 @@
 import { challenges } from './challenges.js'
 import State from './State.js'
-import { sleep } from './utils.js'
+import { makeDiv, sleep, removeChildElements } from './utils.js'
 
 const menu = document.getElementById('menu')
 
@@ -11,11 +11,13 @@ export const createMenu = (callback) => {
     const complete = i <= State.instance.completedChallenges.length - 1
     const playable = i <= State.instance.completedChallenges.length
 
-    const div = document.createElement('div')
-    div.classList.add('menu-item')
+    const div = makeDiv('menu-item')
     if (!playable) {
       div.classList.add('non-playable')
     }
+
+    const leftDiv = makeDiv('menu-item-left')
+    const rightDiv = makeDiv('menu-item-right')
 
     const title = document.createElement('h2')
     const limit = document.createElement('h3')
@@ -27,10 +29,13 @@ export const createMenu = (callback) => {
     best.innerHTML = complete ? State.instance.completedChallenges[i].time : '&nbsp'
     completed.innerText = complete ? 'COMPLETED' : ''
 
-    div.appendChild(title)
-    div.appendChild(limit)
-    div.appendChild(best)
-    div.appendChild(completed)
+    div.appendChild(leftDiv)
+    div.appendChild(rightDiv)
+
+    leftDiv.appendChild(title)
+    leftDiv.appendChild(best)
+    rightDiv.appendChild(limit)
+    rightDiv.appendChild(completed)
 
     menu.appendChild(div)
 

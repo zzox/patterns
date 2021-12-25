@@ -63,7 +63,7 @@ export class Game {
   update (time) {
     const currentTime = Date.now() - this.startTime
 
-    if (this.startTime && currentTime > this.limit) {
+    if (!this.gameOver && this.startTime && currentTime > this.limit) {
       this.lose(currentTime)
     }
 
@@ -92,7 +92,7 @@ export class Game {
 
     const item = this.items.shift()
     if (item !== key) {
-      this.lose()
+      this.lose(currentTime)
       return false
     } else {
       // on first keypress, we start
