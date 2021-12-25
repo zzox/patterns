@@ -11,7 +11,7 @@ const startMenu = document.getElementById('intro')
 let game
 
 const win = (time) => {
-  showModal('Win!', `${timeToDisplay(time)}<small>ms</small>`)
+  showModal('Win!', timeToDisplay(time))
   game = null
 }
 

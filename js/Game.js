@@ -1,10 +1,9 @@
-import { makeDiv, removeChildElements } from './utils.js'
+import { makeDiv, removeChildElements, timeToDisplay } from './utils.js'
 
 const OPTIONS = 4
+const scrollBox = document.getElementById('scroll-box')
 
 const createElements = (items) => {
-  const scrollBox = document.getElementById('scroll-box')
-
   scrollBox.appendChild(makeDiv('clear-scroll'))
 
   for (let i = items.length - 1; i >= 0; i--) {
@@ -19,6 +18,13 @@ const createElements = (items) => {
   }
 }
 
+const createTimer = () => {
+  const timer = document.createElement('h2')
+  timer.id = 'timer'
+  scrollBox.appendChild(timer)
+  return timer
+}
+
 // TEMP: build in the class later
 const keyMap = { 'a': 1, 's': 2, 'd': 3, 'f': 4 }
 
@@ -31,6 +37,7 @@ export class Game {
 
     removeChildElements(document.getElementById('scroll-box'))
     createElements(items)
+    this.timerElement = createTimer()
 
     this.tapButtons = Array.from(document.querySelectorAll('.tap-button'))
     this.hitElements = Array.from(document.querySelectorAll('.item-row'))
@@ -41,6 +48,7 @@ export class Game {
     this.items = items
     this.limit = limit
     this.startTime = null
+    this.endTime = null
     this.gameOver = false
     this.results = []
 
@@ -51,11 +59,25 @@ export class Game {
   }
 
   update (time) {
+    const currentTime = Date.now() - this.startTime
+
+    if (this.startTime && currentTime > this.limit) {
+      this.lose(currentTime)
+    }
+
     const scrollDist = this.scrollBox.scrollTop - this.scrollPos
     if (scrollDist < 2) {
       this.scrollBox.scrollTop = this.scrollPos
     } else {
       this.scrollBox.scrollTop -= scrollDist / 2
+    }
+
+    if (!this.startTime) {
+      this.timerElement.innerHTML = timeToDisplay(0)
+    } else if (!this.gameOver) {
+      this.timerElement.innerHTML = timeToDisplay(currentTime)
+    } else {
+      this.timerElement.innerHTML = timeToDisplay(this.endTime)
     }
 
     requestAnimationFrame(this.update.bind(this))
@@ -64,10 +86,11 @@ export class Game {
   handlePressed (key) {
     if (this.gameOver) return
 
+    const currentTime = Date.now() - this.startTime
+
     const item = this.items.shift()
     if (item !== key) {
-      this.gameOver = true
-      this.loseCallback()
+      this.lose()
       return false
     } else {
       // on first keypress, we start
@@ -76,16 +99,13 @@ export class Game {
         this.startTime = Date.now()
       }
 
-      // animate and move on
-
-      // get a lastTime val
-      this.results.push(Date.now() - this.startTime)
+      this.results.push(currentTime)
 
       if (!this.items.length) {
-        console.log(this.results)
+        this.endTime = currentTime
         this.scrollPos = 0
         this.gameOver = true
-        this.winCallback(Date.now() - this.startTime)
+        this.winCallback(currentTime)
       } else {
         // set the scroll to the next elements top + plus its height (to get it's bottom) and then subtract that by view height
         this.scrollPos = this.hitElements[this.items.length - 1].offsetTop + this.hitElements[this.items.length - 1].clientHeight - this.scrollBox.offsetHeight
@@ -114,6 +134,12 @@ export class Game {
     if (keyReleased && !this.gameOver) {
       this.tapButtons[keyReleased - 1].classList.remove('pressed')
     }
+  }
+
+  lose (time) {
+    this.gameOver = true
+    this.endTime = time
+    this.loseCallback()
   }
 
   tapPressed () {}

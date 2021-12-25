@@ -28,6 +28,7 @@ export const showModal = (title, subtext = '', buttons = []) => {
   })
 }
 
-export const timeToDisplay = (time) => (time / 1000).toFixed(3)
+export const timeToDisplay = (time) =>
+  (time / 1000).toFixed(3).split('.').join('\'<small>') + "\"</small>"
 
 export const sleep = (time) => new Promise((res) => setTimeout(res, time))
