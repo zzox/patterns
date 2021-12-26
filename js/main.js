@@ -12,6 +12,7 @@ let game, keyListener
 
 const gotoMainMenu = () => {
   showElement(startMenu)
+  game.destroy()
   game = null
 }
 
@@ -21,6 +22,14 @@ const removeListener = () => {
 
 const keydownListener = (restartCallback, escapeCallback, nextCallback) => (event) => {
   switch (event.key) {
+    case 'Enter':
+      if (nextCallback) {
+        nextCallback()
+      } else {
+        restartCallback()
+      }
+      removeListener()
+      break
     case 'n':
       if (nextCallback) {
         nextCallback()
@@ -65,6 +74,8 @@ const win = async (time, levelIndex) => {
     { label: '[N]ext', callback: nextCallback },
     { label: 'Level Select', callback: escapeCallback }
   ])
+
+  game.destroy()
   game = null
 }
 
@@ -88,6 +99,9 @@ const lose = async (levelIndex) => {
     { label: '[R]estart', callback: restartCallback },
     { label: 'Level Select', callback: escapeCallback }
   ])
+
+  game.destroy()
+  game = null
 }
 
 const startLevel = (index) => {
@@ -98,17 +112,21 @@ const startLevel = (index) => {
 
 const run = () => {
   document.addEventListener('keydown', (event) => {
-    console.time('[patterns] - keydown timer')
 
     if (event.repeat) return
 
     try {
       game.keyPressed(event.key)
     } catch (e) {
-      console.warn(e)
     }
 
-    console.timeEnd('[patterns] - keydown timer')
+  })
+
+  document.addEventListener('keyup', (event) => {
+    try {
+      game.keyReleased(event.key)
+    } catch (e) {
+    }
   })
 
   Array.from(document.querySelectorAll('.tap-button')).forEach((button, i) => {
@@ -116,7 +134,6 @@ const run = () => {
       try {
         game.touchPressed(i + 1)
       } catch (e) {
-        console.warn(e)
       }
     })
 
@@ -124,17 +141,8 @@ const run = () => {
       try {
         game.touchReleased(i + 1)
       } catch (e) {
-        console.warn(e)
       }
     })
-  })
-
-  document.addEventListener('keyup', (event) => {
-    try {
-      game.keyReleased(event.key)
-    } catch (e) {
-      console.warn(e)
-    }
   })
 
   startButton.onclick = () => {

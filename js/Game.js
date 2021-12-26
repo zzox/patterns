@@ -1,5 +1,5 @@
 import State from './State.js'
-import { makeDiv, removeChildElements, timeToDisplay } from './utils.js'
+import { makeDiv, removeChildElements, sleep, timeToDisplay, validKeys } from './utils.js'
 
 const OPTIONS = 4
 const scrollBox = document.getElementById('scroll-box')
@@ -26,8 +26,12 @@ const createTimer = () => {
   return timer
 }
 
-// TEMP: build in the class later
-const keyMap = { 'a': 1, 's': 2, 'd': 3, 'f': 4 }
+const createDialog = () => {
+  const dialog = document.createElement('h2')
+  dialog.id = 'dialog'
+  scrollBox.appendChild(dialog)
+  return dialog
+}
 
 const HIT_NOTE = 'hit-note'
 const MISS_NOTE = 'miss-note'
@@ -42,7 +46,9 @@ export class Game {
     removeChildElements(document.getElementById('scroll-box'))
     createElements(items)
     this.timerElement = createTimer()
-
+    this.dialogElement = createDialog()
+    this.dialogElement.innerText = 'Bind keys or tap buttons'
+    
     this.tapButtons = Array.from(document.querySelectorAll('.tap-button'))
     this.hitElements = Array.from(document.querySelectorAll('.item-row'))
     this.scrollBox = document.getElementById('scroll-box')
@@ -55,6 +61,8 @@ export class Game {
     this.startTime = null
     this.endTime = null
     this.gameOver = false
+    this.bound = false
+    this.keys = []
     this.results = []
 
     this.winCallback = win
@@ -65,10 +73,10 @@ export class Game {
       b.classList.remove('missed')
     })
 
-    this.update(0)
+    this.update()
   }
 
-  update (time) {
+  update () {
     const currentTime = Date.now() - this.startTime
 
     if (!this.gameOver && this.startTime && currentTime > this.limit) {
@@ -102,11 +110,8 @@ export class Game {
 
     const item = this.items.shift()
     if (item !== key) {
-      // on first keypress, we start
-      if (this.startTime) {
-        this.lose(currentTime)
-        return MISS_NOTE
-      }
+      this.lose(currentTime)
+      return MISS_NOTE
     } else {
       if (!this.startTime) {
         this.startTime = Date.now()
@@ -129,6 +134,28 @@ export class Game {
     }
   }
 
+  async setBound () {
+    this.bound = true
+    this.dialogElement.innerText = 'Ready!'
+    await sleep(500)
+    this.dialogElement.innerText = ''
+  }
+
+  bindKey (key) {
+    if (!this.keyMap(key) && validKeys.includes(key)) {
+      this.tapButtons[this.keys.length].innerText = key.toUpperCase()
+      this.keys.push(key)
+
+      if (this.keys.length === 4) {
+        this.setBound()
+      }
+    }
+  }
+
+  keyMap (key) {
+    return this.keys.indexOf(key) + 1
+  }
+
   pressed (index) {
     const pressResult = this.handlePressed(index)
     if (pressResult === HIT_NOTE) {
@@ -141,14 +168,19 @@ export class Game {
   }
 
   keyPressed (key) {
-    const keyPressed = keyMap[key]
+    if (!this.bound) {
+      this.bindKey(key)
+      return
+    }
+
+    const keyPressed = this.keyMap(key)
     if (keyPressed && !this.gameOver) {
       this.pressed(keyPressed)
     }
   }
 
   keyReleased (key) {
-    const keyReleased = keyMap[key]
+    const keyReleased = this.keyMap(key)
     if (keyReleased && !this.gameOver) {
       this.tapButtons[keyReleased - 1].classList.remove('pressed')
     }
@@ -156,6 +188,11 @@ export class Game {
 
   touchPressed (index) {
     if (this.gameOver) return
+    // bound by tapping
+    if (!this.bound && !this.keys.length) {
+      this.setBound()
+      return
+    }
     this.pressed(index)
   }
 
@@ -170,5 +207,7 @@ export class Game {
     this.loseCallback(this.levelIndex)
   }
 
-  tapPressed () {}
+  destroy () {
+    this.tapButtons.forEach(b => { b.innerText = '' })
+  }
 }

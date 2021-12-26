@@ -226,3 +226,10 @@ button:hover {
   top: 0;
   left: 1rem;
 }
+
+#dialog {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}

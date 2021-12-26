@@ -1,4 +1,4 @@
-export const validKeys = ['abcdefghijklmnopqrstuvwxyz0123456789,./-=']
+export const validKeys = 'abcdefghijklmnopqrstuvwxyz0123456789,./-='.split('')
 
 const modalElement = document.getElementById('popup')
 const modalButtons = document.getElementById('popup-buttons')
