@@ -147,6 +147,11 @@ button:hover {
   background-color: initial;
 }
 
+#popup-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
 #menu {
   position: absolute;
   background-color: var(--bg2);

@@ -10,34 +10,38 @@ export const makeDiv = (className) => {
 }
 
 export const removeChildElements = (element) => {
-  Array.from(element.children).map((el) => el.remove())
+  Array.from(element.children).forEach((el) => el.remove())
 }
 
 export const showModal = (title, subtext = '', buttons = []) => {
   removeChildElements(modalButtons)
   modalElement.children[0].innerText = title
   modalElement.children[1].innerHTML = subtext
-  modalElement.style.visibility = 'visible'
-  modalElement.style.opacity = 1
+  showElement(modalElement)
 
-  buttons.forEach(({ text, callback }) => {
+  buttons.forEach(({ label, callback }) => {
     const button = document.createElement('button')
-    button.innerText = text
+    button.innerText = label
     button.onclick = () => {
-      hideModal()
+      hideElement(modalElement)
       callback()
     }
-    modalElement.appendChild(button)
+    modalButtons.appendChild(button)
   })
-}
-
-export const hideModal = async () => {
-  modalElement.style.opacity = 0
-  await sleep(125)
-  modalElement.style.visibility = 'hidden'
 }
 
 export const timeToDisplay = (time) =>
   (time / 1000).toFixed(3).split('.').join('\'<small>') + '\"</small>'
 
 export const sleep = (time) => new Promise((res, rej) => setTimeout(res, time))
+
+export const showElement = (element) => {
+  element.style.visibility = 'visible'
+  element.style.opacity = 1
+}
+
+export const hideElement = async (element) => {
+  element.style.opacity = 0
+  await sleep(125)
+  element.style.visibility = 'hidden'  
+}

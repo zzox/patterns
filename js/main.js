@@ -2,7 +2,7 @@ import { challenges } from './challenges.js'
 import { Game } from './Game.js'
 import { createMenu, hideMenu } from './menu.js'
 import State from './State.js'
-import { removeChildElements, showModal, sleep, timeToDisplay } from './utils.js'
+import { hideElement, removeChildElements, showElement, showModal, sleep, timeToDisplay } from './utils.js'
 
 console.log('loaded')
 
@@ -10,14 +10,25 @@ const startButton = document.getElementById('start')
 const startMenu = document.getElementById('intro')
 let game
 
+const gotoMainMenu = () => {
+  showElement(startMenu)
+  game = null
+}
+
 const win = (time) => {
-  showModal('Win!', timeToDisplay(time))
+  showModal('Win!', timeToDisplay(time), [
+    { label: 'Next', callback: (levelIndex) => startChallenge(levelIndex + 1) },
+    { label: 'Level Select', callback: () => createMenu(startChallenge) }
+  ])
   game = null
 }
 
 const lose = async () => {
   await sleep(500)
-  showModal('Lose...')
+  showModal('Lose...', undefined, [
+    { label: 'Restart', callback: (levelIndex) => startChallenge(levelIndex) },
+    { label: 'Level Select', callback: () => createMenu(startChallenge) }
+  ])
 }
 
 const startChallenge = (index) => {
@@ -55,8 +66,7 @@ const run = () => {
       createMenu(startChallenge)
     }
 
-    // HACK: allow tweening of start menu opacity
-    setTimeout(() => startMenu.remove(), 125)
+    hideElement(startMenu)
   }
 
   // TODO: add touch event listeners for each button div
