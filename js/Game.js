@@ -129,17 +129,21 @@ export class Game {
     }
   }
 
+  pressed (index) {
+    const pressResult = this.handlePressed(index)
+    if (pressResult === HIT_NOTE) {
+      // shift one for element
+      this.tapButtons[index - 1].classList.add('pressed')
+    } else if (pressResult === MISS_NOTE) {
+      this.tapButtons[index - 1].classList.add('missed')
+      Array.from(this.hitElements[this.items.length].children)[index - 1].classList.add('missed')
+    }
+  }
+
   keyPressed (key) {
     const keyPressed = keyMap[key]
     if (keyPressed && !this.gameOver) {
-      const pressResult = this.handlePressed(keyPressed)
-      if (pressResult === HIT_NOTE) {
-        // shift one for element
-        this.tapButtons[keyPressed - 1].classList.add('pressed')
-      } else if (pressResult === MISS_NOTE) {
-        this.tapButtons[keyPressed - 1].classList.add('missed')
-        Array.from(this.hitElements[this.items.length].children)[keyPressed - 1].classList.add('missed')
-      }
+      this.pressed(keyPressed)
     }
   }
 
@@ -148,6 +152,16 @@ export class Game {
     if (keyReleased && !this.gameOver) {
       this.tapButtons[keyReleased - 1].classList.remove('pressed')
     }
+  }
+
+  touchPressed (index) {
+    if (this.gameOver) return
+    this.pressed(index)
+  }
+
+  touchReleased (index) {
+    if (this.gameOver) return
+    this.tapButtons[index - 1].classList.remove('pressed')
   }
 
   lose (time) {

@@ -111,6 +111,24 @@ const run = () => {
     console.timeEnd('[patterns] - keydown timer')
   })
 
+  Array.from(document.querySelectorAll('.tap-button')).forEach((button, i) => {
+    button.addEventListener('mousedown', () => {
+      try {
+        game.touchPressed(i + 1)
+      } catch (e) {
+        console.warn(e)
+      }
+    })
+
+    button.addEventListener('mouseup', () => {
+      try {
+        game.touchReleased(i + 1)
+      } catch (e) {
+        console.warn(e)
+      }
+    })
+  })
+
   document.addEventListener('keyup', (event) => {
     try {
       game.keyReleased(event.key)
