@@ -31,9 +31,9 @@ export const showModal = (title, subtext = '', buttons = []) => {
 }
 
 export const timeToDisplay = (time) =>
-  (time / 1000).toFixed(3).split('.').join('\'<small>') + '\"</small>'
+  (time / 1000).toFixed(3).split('.').join('\'<small>') + '"</small>'
 
-export const sleep = (time) => new Promise((res, rej) => setTimeout(res, time))
+export const sleep = (time) => new Promise((resolve, reject) => setTimeout(resolve, time))
 
 export const showElement = (element) => {
   element.style.visibility = 'visible'
@@ -43,5 +43,5 @@ export const showElement = (element) => {
 export const hideElement = async (element) => {
   element.style.opacity = 0
   await sleep(125)
-  element.style.visibility = 'hidden'  
+  element.style.visibility = 'hidden'
 }

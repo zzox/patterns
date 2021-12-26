@@ -8,27 +8,86 @@ console.log('loaded')
 
 const startButton = document.getElementById('start')
 const startMenu = document.getElementById('intro')
-let game
+const modalElement = document.getElementById('popup')
+
+let game, keyListener
 
 const gotoMainMenu = () => {
   showElement(startMenu)
   game = null
 }
 
+const removeListener = () => {
+  document.removeEventListener('keydown', keyListener)
+}
+
+const keydownListener = (restartCallback, escapeCallback, nextCallback = () => {}) => (event) => {
+  console.log('listening?', event.key)
+  switch (event.key) {
+    case 'n':
+      nextCallback()
+      removeListener()
+      break
+    case 'r':
+      restartCallback()
+      removeListener()
+      break
+    case 'q':
+    case 'Escape':
+      escapeCallback()
+      removeListener()
+      break
+    default: break
+  }
+}
+
 const win = async (time, levelIndex) => {
   await sleep(500)
+
+  const nextCallback = () => {
+    startLevel(levelIndex + 1)
+    hideElement(modalElement)
+  }
+
+  const restartCallback = () => {
+    startLevel(levelIndex)
+    hideElement(modalElement)
+  }
+
+  const escapeCallback = () => {
+    createMenu(startLevel)
+    hideElement(modalElement)
+  }
+
+  keyListener = keydownListener(restartCallback, escapeCallback, nextCallback)
+  document.addEventListener('keydown', keyListener)
+
   showModal('Win!', timeToDisplay(time), [
-    { label: 'Next', callback: () => startLevel(levelIndex + 1) },
-    { label: 'Level Select', callback: () => createMenu(startLevel) }
+    { label: '[N]ext', callback: nextCallback },
+    { label: 'Level Select', callback: escapeCallback }
   ])
   game = null
 }
 
 const lose = async (levelIndex) => {
   await sleep(500)
+
+  const restartCallback = () => {
+    startLevel(levelIndex)
+    hideElement(modalElement)
+  }
+
+  const escapeCallback = () => {
+    createMenu(startLevel)
+    hideElement(modalElement)
+  }
+
+  keyListener = keydownListener(restartCallback, escapeCallback)
+  document.addEventListener('keydown', keyListener)
+
   showModal('Lose...', undefined, [
-    { label: 'Restart', callback: () => startLevel(levelIndex) },
-    { label: 'Level Select', callback: () => createMenu(startLevel) }
+    { label: '[R]estart', callback: restartCallback },
+    { label: 'Level Select', callback: escapeCallback }
   ])
 }
 
