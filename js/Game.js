@@ -99,11 +99,12 @@ export class Game {
 
     const item = this.items.shift()
     if (item !== key) {
-      this.lose(currentTime)
+      // on first keypress, we start
+      if (this.startTime) {
+        this.lose(currentTime)
+      }
       return false
     } else {
-      // on first keypress, we start
-      // TODO: first correct keypress?
       if (!this.startTime) {
         this.startTime = Date.now()
       }

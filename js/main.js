@@ -15,7 +15,8 @@ const gotoMainMenu = () => {
   game = null
 }
 
-const win = (time, levelIndex) => {
+const win = async (time, levelIndex) => {
+  await sleep(500)
   showModal('Win!', timeToDisplay(time), [
     { label: 'Next', callback: () => startLevel(levelIndex + 1) },
     { label: 'Level Select', callback: () => createMenu(startLevel) }
@@ -37,7 +38,6 @@ const startLevel = (index) => {
   hideMenu()
 }
 
-// TODO: turn the following into a class
 const run = () => {
   document.addEventListener('keydown', (event) => {
     console.time('[patterns] - keydown timer')
