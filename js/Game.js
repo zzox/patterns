@@ -29,6 +29,9 @@ const createTimer = () => {
 // TEMP: build in the class later
 const keyMap = { 'a': 1, 's': 2, 'd': 3, 'f': 4 }
 
+const HIT_NOTE = 'hit-note'
+const MISS_NOTE = 'miss-note'
+
 export class Game {
   constructor ({ pattern, repetitions, limit }, levelIndex, win, lose) {
     let items = []
@@ -102,8 +105,8 @@ export class Game {
       // on first keypress, we start
       if (this.startTime) {
         this.lose(currentTime)
+        return MISS_NOTE
       }
-      return false
     } else {
       if (!this.startTime) {
         this.startTime = Date.now()
@@ -122,18 +125,18 @@ export class Game {
         this.scrollPos = this.hitElements[this.items.length - 1].offsetTop + this.hitElements[this.items.length - 1].clientHeight - this.scrollBox.offsetHeight
       }
 
-      return true
+      return HIT_NOTE
     }
   }
 
   keyPressed (key) {
     const keyPressed = keyMap[key]
     if (keyPressed && !this.gameOver) {
-      const correctPress = this.handlePressed(keyPressed)
-      if (correctPress) {
+      const pressResult = this.handlePressed(keyPressed)
+      if (pressResult === HIT_NOTE) {
         // shift one for element
         this.tapButtons[keyPressed - 1].classList.add('pressed')
-      } else {
+      } else if (pressResult === MISS_NOTE) {
         this.tapButtons[keyPressed - 1].classList.add('missed')
         Array.from(this.hitElements[this.items.length].children)[keyPressed - 1].classList.add('missed')
       }

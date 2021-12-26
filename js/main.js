@@ -4,8 +4,6 @@ import { createMenu, hideMenu } from './menu.js'
 import State from './State.js'
 import { hideElement, removeChildElements, showElement, showModal, sleep, timeToDisplay } from './utils.js'
 
-console.log('loaded')
-
 const startButton = document.getElementById('start')
 const startMenu = document.getElementById('intro')
 const modalElement = document.getElementById('popup')
@@ -21,12 +19,13 @@ const removeListener = () => {
   document.removeEventListener('keydown', keyListener)
 }
 
-const keydownListener = (restartCallback, escapeCallback, nextCallback = () => {}) => (event) => {
-  console.log('listening?', event.key)
+const keydownListener = (restartCallback, escapeCallback, nextCallback) => (event) => {
   switch (event.key) {
     case 'n':
-      nextCallback()
-      removeListener()
+      if (nextCallback) {
+        nextCallback()
+        removeListener()
+      }
       break
     case 'r':
       restartCallback()
