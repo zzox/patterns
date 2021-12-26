@@ -12,10 +12,10 @@ class State {
   }
 
   winChallenge ({ index, time }) {
-    if (index === this.completedChallenges.length) {
-      this.completedChallenges.push({ time })
+    if (index === this.completedLevels.length) {
+      this.completedLevels.push({ time })
     } else {
-      if (time < this.completedChallenges[index].time) {
+      if (time < this.completedLevels[index].time) {
         return NEW_BEST
       }
     }
@@ -28,7 +28,7 @@ class State {
 
   deserialize () {
     // read from storage
-    this.completedChallenges = []
+    this.completedLevels = []
   }
 }
 

@@ -1,15 +1,15 @@
-import { challenges } from './challenges.js'
+import { levels } from './levels.js'
 import State from './State.js'
-import { makeDiv, sleep, removeChildElements } from './utils.js'
+import { makeDiv, sleep, removeChildElements, timeToDisplay } from './utils.js'
 
 const menu = document.getElementById('menu')
 
 export const createMenu = (callback) => {
   menu.style.opacity = 1
   menu.style.visibility = 'visible'
-  challenges.forEach((challenge, i) => {
-    const complete = i <= State.instance.completedChallenges.length - 1
-    const playable = i <= State.instance.completedChallenges.length
+  levels.forEach((challenge, i) => {
+    const complete = i <= State.instance.completedLevels.length - 1
+    const playable = i <= State.instance.completedLevels.length
 
     const div = makeDiv('menu-item')
     if (!playable) {
@@ -21,12 +21,14 @@ export const createMenu = (callback) => {
 
     const title = document.createElement('h2')
     const limit = document.createElement('h3')
-    const best = document.createElement('h4')
+    const best = document.createElement('h3')
     const completed = document.createElement('h4')
 
     title.innerText = challenge.name
-    limit.innerHTML = `${challenge.limit / 1000}s`
-    best.innerHTML = complete ? State.instance.completedChallenges[i].time : '&nbsp'
+    limit.innerText = `${challenge.limit / 1000}s`
+    best.innerHTML = complete
+      ? `Best: ${timeToDisplay(State.instance.completedLevels[i].time)}`
+      : '&nbsp'
     completed.innerText = complete ? 'COMPLETED' : ''
 
     div.appendChild(leftDiv)

@@ -1,4 +1,4 @@
-import { challenges } from './challenges.js'
+import { levels } from './levels.js'
 import { Game } from './Game.js'
 import { createMenu, hideMenu } from './menu.js'
 import State from './State.js'
@@ -15,24 +15,24 @@ const gotoMainMenu = () => {
   game = null
 }
 
-const win = (time) => {
+const win = (time, levelIndex) => {
   showModal('Win!', timeToDisplay(time), [
-    { label: 'Next', callback: (levelIndex) => startChallenge(levelIndex + 1) },
-    { label: 'Level Select', callback: () => createMenu(startChallenge) }
+    { label: 'Next', callback: () => startLevel(levelIndex + 1) },
+    { label: 'Level Select', callback: () => createMenu(startLevel) }
   ])
   game = null
 }
 
-const lose = async () => {
+const lose = async (levelIndex) => {
   await sleep(500)
   showModal('Lose...', undefined, [
-    { label: 'Restart', callback: (levelIndex) => startChallenge(levelIndex) },
-    { label: 'Level Select', callback: () => createMenu(startChallenge) }
+    { label: 'Restart', callback: () => startLevel(levelIndex) },
+    { label: 'Level Select', callback: () => createMenu(startLevel) }
   ])
 }
 
-const startChallenge = (index) => {
-  game = new Game(challenges[index], index, win, lose)
+const startLevel = (index) => {
+  game = new Game(levels[index], index, win, lose)
   startMenu.style.opacity = 0
   hideMenu()
 }
@@ -63,7 +63,7 @@ const run = () => {
 
   startButton.onclick = () => {
     if (!game) {
-      createMenu(startChallenge)
+      createMenu(startLevel)
     }
 
     hideElement(startMenu)

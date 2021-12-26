@@ -57,6 +57,11 @@ export class Game {
     this.winCallback = win
     this.loseCallback = lose
 
+    this.tapButtons.forEach(b => {
+      b.classList.remove('pressed')
+      b.classList.remove('missed')
+    })
+
     this.update(0)
   }
 
@@ -79,10 +84,12 @@ export class Game {
     } else if (!this.gameOver) {
       this.timerElement.innerHTML = timeToDisplay(currentTime)
     } else {
-      this.timerElement.innerHTML = timeToDisplay(this.endTime)
+      this.timerElement.innerHTML = timeToDisplay(this.endTime > this.limit ? this.limit : this.endTime)
     }
 
-    requestAnimationFrame(this.update.bind(this))
+    if (!this.gameOver) {
+      requestAnimationFrame(this.update.bind(this))
+    }
   }
 
   handlePressed (key) {
@@ -108,7 +115,7 @@ export class Game {
         this.scrollPos = 0
         this.gameOver = true
         State.instance.winChallenge({ index: this.levelIndex, time: currentTime })
-        this.winCallback(currentTime)
+        this.winCallback(currentTime, this.levelIndex)
       } else {
         // set the scroll to the next elements top + plus its height (to get it's bottom) and then subtract that by view height
         this.scrollPos = this.hitElements[this.items.length - 1].offsetTop + this.hitElements[this.items.length - 1].clientHeight - this.scrollBox.offsetHeight
@@ -142,7 +149,7 @@ export class Game {
   lose (time) {
     this.gameOver = true
     this.endTime = time
-    this.loseCallback()
+    this.loseCallback(this.levelIndex)
   }
 
   tapPressed () {}
