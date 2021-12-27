@@ -1,18 +1,25 @@
 import { levels } from './levels.js'
 import { Game } from './Game.js'
+import State from './State.js'
 import { createMenu, hideMenu } from './menu.js'
-import { hideElement, showElement, showModal, sleep, timeToDisplay } from './utils.js'
+import { hideElement, removeChildElements, showElement, showModal, sleep, timeToDisplay } from './utils.js'
 
 const startButton = document.getElementById('start')
 const startMenu = document.getElementById('intro')
 const modalElement = document.getElementById('popup')
+const menuElement = document.getElementById('menu')
 
 let game, keyListener
+let menuItemSelected = null
 
-const gotoMainMenu = () => {
+const gotoMainMenu = async () => {
+  try {
+    game.destroy()
+    game = null
+  } catch (e) {}
   showElement(startMenu)
-  game.destroy()
-  game = null
+  await hideElement(menuElement)
+  removeChildElements(menuElement)
 }
 
 const removeListener = () => {
@@ -62,7 +69,8 @@ const win = async (time, levelIndex) => {
   }
 
   const escapeCallback = () => {
-    createMenu(startLevel)
+    createMenu(startLevel, gotoMainMenu)
+    menuItemSelected = 0
     hideElement(modalElement)
   }
 
@@ -87,7 +95,8 @@ const lose = async (levelIndex) => {
   }
 
   const escapeCallback = () => {
-    createMenu(startLevel)
+    createMenu(startLevel, gotoMainMenu)
+    menuItemSelected = 0
     hideElement(modalElement)
   }
 
@@ -107,14 +116,44 @@ const startLevel = (index) => {
   game = new Game(levels[index], index, win, lose)
   startMenu.style.opacity = 0
   hideMenu()
+  menuItemSelected = null
 }
 
 const run = () => {
   document.addEventListener('keydown', (event) => {
+    const key = event.key
+    if (menuItemSelected !== null && ['ArrowUp', 'ArrowDown', 'Enter'].includes(key)) {
+      const numLevels = State.instance.completedLevels.length
+      const menuItems = Array.from(menuElement.children)
+      menuItems.forEach(item => { item.classList.remove('menu-item-focused')})
+
+      if (key === 'ArrowUp') {
+        menuItemSelected--
+        if (menuItemSelected < 0) {
+          // includes back button
+          menuItemSelected = numLevels + 1
+        }
+      }
+
+      if (key === 'ArrowDown') {
+        menuItemSelected++
+        if (menuItemSelected > numLevels + 1) {
+          menuItemSelected = 0
+        }
+      }
+
+      menuItems[menuItemSelected].classList.add('menu-item-focused')
+      menuItems[menuItemSelected].scrollIntoView()
+
+      if (key === 'Enter') {
+        menuItems[menuItemSelected].click()
+      }
+    }
+
     if (event.repeat) return
 
     try {
-      game.keyPressed(event.key)
+      game.keyPressed(key)
     } catch (e) {}
   })
 
@@ -140,13 +179,12 @@ const run = () => {
 
   startButton.onclick = () => {
     if (!game) {
-      createMenu(startLevel)
+      createMenu(startLevel, gotoMainMenu)
+      menuItemSelected = 0
     }
 
     hideElement(startMenu)
   }
-
-  // TODO: add touch event listeners for each button div
 }
 
 // TODO: remove run function if we don't need anything async

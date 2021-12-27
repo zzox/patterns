@@ -193,6 +193,23 @@ button:hover {
   background-color: var(--highlight-color-2);
 }
 
+.menu-item-focused {
+  background-color: var(--highlight-color-2);
+}
+
+.back-button {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0.5rem;
+  border: var(--text-color) 2px solid;
+  border-radius: 0.75rem;
+}
+
+.back-button:hover {
+  background-color: var(--highlight-color-2);
+}
+
 .menu-item-left {
   flex-basis: 70%;
   display: flex;

@@ -4,9 +4,18 @@ import { makeDiv, sleep, removeChildElements, timeToDisplay } from './utils.js'
 
 const menu = document.getElementById('menu')
 
-export const createMenu = (callback) => {
+export const createMenu = (callback, returnCallback) => {
   // reset preferred keys
   State.instance.preferredKeys = []
+
+  const backButton = makeDiv('back-button')
+  backButton.onclick = returnCallback
+  // for now, focused item is at 0
+  backButton.classList.add('menu-item-focused')
+  const backText = document.createElement('h1')
+  backText.innerText = 'Back'
+  backButton.appendChild(backText)
+  menu.appendChild(backButton)
 
   menu.style.opacity = 1
   menu.style.visibility = 'visible'
