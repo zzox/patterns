@@ -168,6 +168,10 @@ export class Game {
   }
 
   keyPressed (key) {
+    if (key === 'Escape') {
+      this.lose(0)
+    }
+
     if (!this.bound) {
       this.bindKey(key)
       return
