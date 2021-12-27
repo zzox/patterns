@@ -5,6 +5,9 @@ import { makeDiv, sleep, removeChildElements, timeToDisplay } from './utils.js'
 const menu = document.getElementById('menu')
 
 export const createMenu = (callback) => {
+  // reset preferred keys
+  State.instance.preferredKeys = []
+
   menu.style.opacity = 1
   menu.style.visibility = 'visible'
   levels.forEach((challenge, i) => {

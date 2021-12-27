@@ -1,8 +1,7 @@
 import { levels } from './levels.js'
 import { Game } from './Game.js'
 import { createMenu, hideMenu } from './menu.js'
-import State from './State.js'
-import { hideElement, removeChildElements, showElement, showModal, sleep, timeToDisplay } from './utils.js'
+import { hideElement, showElement, showModal, sleep, timeToDisplay } from './utils.js'
 
 const startButton = document.getElementById('start')
 const startMenu = document.getElementById('intro')
@@ -112,36 +111,30 @@ const startLevel = (index) => {
 
 const run = () => {
   document.addEventListener('keydown', (event) => {
-
     if (event.repeat) return
 
     try {
       game.keyPressed(event.key)
-    } catch (e) {
-    }
-
+    } catch (e) {}
   })
 
   document.addEventListener('keyup', (event) => {
     try {
       game.keyReleased(event.key)
-    } catch (e) {
-    }
+    } catch (e) {}
   })
 
   Array.from(document.querySelectorAll('.tap-button')).forEach((button, i) => {
     button.addEventListener('mousedown', () => {
       try {
         game.touchPressed(i + 1)
-      } catch (e) {
-      }
+      } catch (e) {}
     })
 
     button.addEventListener('mouseup', () => {
       try {
         game.touchReleased(i + 1)
-      } catch (e) {
-      }
+      } catch (e) {}
     })
   })
 

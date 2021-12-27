@@ -45,13 +45,22 @@ export class Game {
 
     removeChildElements(document.getElementById('scroll-box'))
     createElements(items)
-    this.timerElement = createTimer()
-    this.dialogElement = createDialog()
-    this.dialogElement.innerText = 'Bind keys or tap buttons'
-    
     this.tapButtons = Array.from(document.querySelectorAll('.tap-button'))
     this.hitElements = Array.from(document.querySelectorAll('.item-row'))
     this.scrollBox = document.getElementById('scroll-box')
+    this.timerElement = createTimer()
+    this.dialogElement = createDialog()
+
+    if (State.instance.preferredKeys.length) {
+      // keep keys if stored in state
+      this.keys = State.instance.preferredKeys
+      this.tapButtons.forEach((b, i) => { b.innerText = this.keys[i].toUpperCase() })
+      this.setBound()
+    } else {
+      this.keys = []
+      this.dialogElement.innerText = 'Bind keys or tap buttons'
+      this.bound = false
+    }
 
     this.scrollPos = this.scrollBox.scrollTop = this.scrollBox.scrollHeight
 
@@ -61,8 +70,6 @@ export class Game {
     this.startTime = null
     this.endTime = null
     this.gameOver = false
-    this.bound = false
-    this.keys = []
     this.results = []
 
     this.winCallback = win
@@ -135,6 +142,7 @@ export class Game {
   }
 
   async setBound () {
+    State.instance.preferredKeys = this.keys
     this.bound = true
     this.dialogElement.innerText = 'Ready!'
     await sleep(500)

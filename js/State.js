@@ -9,6 +9,7 @@ class State {
   constructor () {
     this.deserialize()
     this.id = (Math.random() + '').slice(3)
+    this.preferredKeys = []
   }
 
   winChallenge ({ index, time }) {
