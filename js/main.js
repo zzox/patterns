@@ -24,6 +24,7 @@ const gotoMainMenu = async () => {
   showElement(startMenu)
   await hideElement(menuElement)
   removeChildElements(menuElement)
+  menuItemSelected = null
 }
 
 const removeListener = () => {
@@ -31,6 +32,7 @@ const removeListener = () => {
 }
 
 const keydownListener = (restartCallback, escapeCallback, nextCallback) => (event) => {
+  event.preventDefault()
   switch (event.key) {
     case 'Enter':
       if (nextCallback) {
@@ -38,22 +40,18 @@ const keydownListener = (restartCallback, escapeCallback, nextCallback) => (even
       } else {
         restartCallback()
       }
-      removeListener()
       break
     case 'n':
       if (nextCallback) {
         nextCallback()
-        removeListener()
       }
       break
     case 'r':
       restartCallback()
-      removeListener()
       break
     case 'q':
     case 'Escape':
       escapeCallback()
-      removeListener()
       break
     default: break
   }
@@ -136,6 +134,8 @@ const startLevel = (index) => {
 
 const run = () => {
   document.addEventListener('keydown', (event) => {
+    event.preventDefault()
+
     const key = event.key
     if (menuItemSelected !== null && ['ArrowUp', 'ArrowDown', 'Enter'].includes(key)) {
       const numLevels = State.instance.completedLevels.length
@@ -173,19 +173,22 @@ const run = () => {
   })
 
   document.addEventListener('keyup', (event) => {
+    event.preventDefault()
     try {
       game.keyReleased(event.key)
     } catch (e) {}
   })
 
   Array.from(document.querySelectorAll('.tap-button')).forEach((button, i) => {
-    button.addEventListener('pointerdown', () => {
+    button.addEventListener('pointerdown', (event) => {
+      event.preventDefault()
       try {
         game.touchPressed(i + 1)
       } catch (e) {}
     })
 
-    button.addEventListener('pointerup', () => {
+    button.addEventListener('pointerup', (event) => {
+      event.preventDefault()
       try {
         game.touchReleased(i + 1)
       } catch (e) {}

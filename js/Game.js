@@ -167,7 +167,7 @@ export class Game {
   }
 
   keyMap (key) {
-    return this.keys.indexOf(key) + 1
+    return this.keys !== TAP && this.keys.indexOf(key) + 1
   }
 
   pressed (index) {
