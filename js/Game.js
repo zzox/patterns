@@ -2,6 +2,9 @@ import State from './State.js'
 import { makeDiv, removeChildElements, sleep, timeToDisplay, validKeys } from './utils.js'
 
 const OPTIONS = 4
+const TAP = 'tap'
+const HIT_NOTE = 'hit-note'
+const MISS_NOTE = 'miss-note'
 const scrollBox = document.getElementById('scroll-box')
 
 const createElements = (items) => {
@@ -33,15 +36,14 @@ const createDialog = () => {
   return dialog
 }
 
-const HIT_NOTE = 'hit-note'
-const MISS_NOTE = 'miss-note'
-
 export class Game {
   constructor ({ pattern, repetitions, limit }, levelIndex, win, lose) {
     let items = []
     for (let i = 0; i < repetitions; i++) {
       items = [...items, ...pattern]
     }
+
+    this.id = (Math.random() + '').slice(2)
 
     removeChildElements(document.getElementById('scroll-box'))
     createElements(items)
@@ -51,10 +53,13 @@ export class Game {
     this.timerElement = createTimer()
     this.dialogElement = createDialog()
 
-    if (State.instance.preferredKeys.length) {
+    const preferredKeys = State.instance.preferredKeys
+    if (preferredKeys === TAP || preferredKeys.length) {
       // keep keys if stored in state
-      this.keys = State.instance.preferredKeys
-      this.tapButtons.forEach((b, i) => { b.innerText = this.keys[i].toUpperCase() })
+      this.keys = preferredKeys
+      if (preferredKeys !== TAP) {
+        this.tapButtons.forEach((b, i) => { b.innerText = this.keys[i].toUpperCase() })
+      }
       this.setBound()
     } else {
       this.keys = []
@@ -81,6 +86,7 @@ export class Game {
     })
 
     this.update()
+    this.tapButtons[0].scrollIntoView({ block: 'end' })
   }
 
   update () {
@@ -202,6 +208,8 @@ export class Game {
     if (this.gameOver) return
     // bound by tapping
     if (!this.bound && !this.keys.length) {
+      State.instance.preferredKeys = TAP
+      this.keys = TAP
       this.setBound()
       return
     }

@@ -12,10 +12,14 @@ const menuElement = document.getElementById('menu')
 let game, keyListener
 let menuItemSelected = null
 
+const destroyGame = () => {
+  game.destroy()
+  game = null
+}
+
 const gotoMainMenu = async () => {
   try {
-    game.destroy()
-    game = null
+    destroyGame()
   } catch (e) {}
   showElement(startMenu)
   await hideElement(menuElement)
@@ -61,17 +65,20 @@ const win = async (time, levelIndex) => {
   const nextCallback = () => {
     startLevel(levelIndex + 1)
     hideElement(modalElement)
+    removeListener()
   }
 
   const restartCallback = () => {
     startLevel(levelIndex)
     hideElement(modalElement)
+    removeListener()
   }
 
   const escapeCallback = () => {
     createMenu(startLevel, gotoMainMenu)
     menuItemSelected = 0
     hideElement(modalElement)
+    removeListener()
   }
 
   keyListener = keydownListener(restartCallback, escapeCallback, nextCallback)
@@ -82,8 +89,7 @@ const win = async (time, levelIndex) => {
     { label: 'Level Select', callback: escapeCallback }
   ])
 
-  game.destroy()
-  game = null
+  destroyGame()
 }
 
 const lose = async (levelIndex) => {
@@ -92,12 +98,14 @@ const lose = async (levelIndex) => {
   const restartCallback = () => {
     startLevel(levelIndex)
     hideElement(modalElement)
+    removeListener()
   }
 
   const escapeCallback = () => {
     createMenu(startLevel, gotoMainMenu)
     menuItemSelected = 0
     hideElement(modalElement)
+    removeListener()
   }
 
   keyListener = keydownListener(restartCallback, escapeCallback)
@@ -108,15 +116,22 @@ const lose = async (levelIndex) => {
     { label: 'Level Select', callback: escapeCallback }
   ])
 
-  game.destroy()
-  game = null
+  destroyGame()
 }
 
 const startLevel = (index) => {
-  game = new Game(levels[index], index, win, lose)
-  startMenu.style.opacity = 0
-  hideMenu()
-  menuItemSelected = null
+  // HACK: should not be needed
+  if (!game) {
+    game = new Game(levels[index], index, win, lose)
+    startMenu.style.opacity = 0
+    hideMenu()
+    menuItemSelected = null
+  } else {
+    console.warn(
+      'Trying to start a game with an existing instance.\n' +
+      'Not all listeners are cleaned up.'
+    )
+  }
 }
 
 const run = () => {
