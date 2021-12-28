@@ -6,8 +6,9 @@
   --highlight-color-2: #332e5f;
   --non-playable-color: #465574;
   --error-color: #bb1414;
-  --one-eighth-height: calc(100vh / 8);
-  --one-sixteenth-height: calc(100vh / 16);
+  --view-height: 100vh;
+  --one-eighth-height: calc(var(--view-height) / 8);
+  --one-sixteenth-height: calc(var(--view-height) / 16);
 }
 
 body {
@@ -20,7 +21,7 @@ body {
 .container {
   display: flex;
   justify-content: center;
-  height: 100vh;
+  height: var(--view-height);
 }
 
 main {
@@ -35,7 +36,7 @@ main {
 .modal {
   position: absolute;
   background-color: var(--bg2);
-  height: 100vh;
+  height: var(--view-height);
   opacity: 1;
   transition: opacity 250ms, background-color 250ms;
   align-items: center;
@@ -139,7 +140,7 @@ button:hover {
 }
 
 .clear-scroll {
-  height: 100vh;
+  height: var(--view-height);
   width: 100%;
   border: var(--bg2) 2px solid;
 }
@@ -172,7 +173,7 @@ button:hover {
   opacity: 0;
   transition: opacity 250ms;
   visibility: hidden;
-  height: 100vh;
+  height: var(--view-height);
   overflow-y: scroll;
   overflow-x: hidden;
   -ms-overflow-style: none;
