@@ -137,7 +137,7 @@ export class Game {
         this.endTime = currentTime
         this.scrollPos = 0
         this.gameOver = true
-        State.instance.winChallenge({ index: this.levelIndex, time: currentTime })
+        State.instance.winLevel({ index: this.levelIndex, time: currentTime })
         this.winCallback(currentTime, this.levelIndex)
       } else {
         // set the scroll to the next elements top + plus its height (to get it's bottom) and then subtract that by view height

@@ -19,7 +19,7 @@ export const createMenu = (callback, returnCallback) => {
 
   menu.style.opacity = 1
   menu.style.visibility = 'visible'
-  levels.forEach((challenge, i) => {
+  levels.forEach((level, i) => {
     const complete = i <= State.instance.completedLevels.length - 1
     const playable = i <= State.instance.completedLevels.length
 
@@ -36,8 +36,8 @@ export const createMenu = (callback, returnCallback) => {
     const best = document.createElement('h3')
     const completed = document.createElement('h4')
 
-    title.innerText = challenge.name
-    limit.innerText = `${challenge.limit / 1000}s`
+    title.innerText = level.name
+    limit.innerText = `${level.limit / 1000}s`
     best.innerHTML = complete
       ? `Best: ${timeToDisplay(State.instance.completedLevels[i].time)}`
       : '&nbsp'
