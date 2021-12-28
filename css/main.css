@@ -31,6 +31,12 @@ main {
   display: flex;
   flex-direction: column;
   position: relative;
+  transition: opacity 250ms;
+  height: var(--view-height);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .modal {
@@ -168,16 +174,9 @@ button:hover {
 }
 
 #menu {
-  position: absolute;
-  background-color: var(--bg2);
   opacity: 0;
-  transition: opacity 250ms;
   visibility: hidden;
-  height: var(--view-height);
-  overflow-y: scroll;
-  overflow-x: hidden;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  position: absolute;
 }
 
 #menu::-webkit-scrollbar {
@@ -267,4 +266,16 @@ button:hover {
   position: absolute;
   bottom: 0;
   left: 1rem;
+}
+
+#challenge-menu {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+
+#create-challenge {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
 }

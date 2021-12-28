@@ -1,13 +1,16 @@
 import { levels } from './levels.js'
 import { Game } from './Game.js'
 import State from './State.js'
-import { createMenu, hideMenu } from './menu.js'
+import { createMenu, hideMenu, createChallengeMenu, hideChallengeMenu } from './menu.js'
 import { hideElement, removeChildElements, showElement, showModal, sleep, timeToDisplay } from './utils.js'
 
 const startButton = document.getElementById('start')
+const challengesButton = document.getElementById('challenges')
 const startMenu = document.getElementById('intro')
 const modalElement = document.getElementById('popup')
 const menuElement = document.getElementById('menu')
+const challengesElement = document.getElementById('challenge-menu')
+const createChallengeElement = document.getElementById('create-challenge')
 
 let game, keyListener
 let menuItemSelected = null
@@ -18,12 +21,15 @@ const destroyGame = () => {
 }
 
 const gotoMainMenu = async () => {
+  console.log('trying')
   try {
     destroyGame()
   } catch (e) {}
   showElement(startMenu)
-  await hideElement(menuElement)
+  // HACK: hide all sub menus
+  await Promise.all([hideElement(menuElement), hideElement(challengesElement)])
   removeChildElements(menuElement)
+  removeChildElements(challengesElement)
   menuItemSelected = null
 }
 
@@ -132,14 +138,38 @@ const startLevel = (index) => {
   }
 }
 
+const startChallenge = (index) => {
+  if (!game) {
+    game = new Game(State.instance.challenges[index], index, ()=>console.log('challenge won'), ()=>console.log('challenge lost'))
+    startMenu.style.opacity = 0
+    hideMenu()
+    menuItemSelected = null
+  } else {
+    console.warn(
+      'Trying to start a game with an existing instance.\n' +
+      'Not all listeners are cleaned up.'
+    )
+  }
+}
+
+const createChallenge = () => {
+  hideChallengeMenu()
+  showElement(createChallengeElement)
+}
+
 const run = () => {
   document.addEventListener('keydown', (event) => {
     event.preventDefault()
 
     const key = event.key
     if (menuItemSelected !== null && ['ArrowUp', 'ArrowDown', 'Enter'].includes(key)) {
-      const numLevels = State.instance.completedLevels.length
-      const menuItems = Array.from(menuElement.children)
+      const menuType = menuElement.style.visibility === 'visible' ? 'main' : 'challenge'
+      const numLevels = menuType === 'main'
+        ? State.instance.completedLevels.length
+        : State.instance.challenges.length + 1
+      const menuItems = menuType === 'main'
+        ? Array.from(menuElement.children)
+        : Array.from(challengesElement.children)
       menuItems.forEach(item => { item.classList.remove('menu-item-focused')})
 
       if (key === 'ArrowUp') {
@@ -198,6 +228,15 @@ const run = () => {
   startButton.onclick = () => {
     if (!game) {
       createMenu(startLevel, gotoMainMenu)
+      menuItemSelected = 0
+    }
+
+    hideElement(startMenu)
+  }
+
+  challengesButton.onclick = () => {
+    if (!game) {
+      createChallengeMenu(startChallenge, createChallenge, gotoMainMenu)
       menuItemSelected = 0
     }
 

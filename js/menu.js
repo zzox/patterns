@@ -3,6 +3,7 @@ import State from './State.js'
 import { makeDiv, sleep, removeChildElements, timeToDisplay } from './utils.js'
 
 const menu = document.getElementById('menu')
+const challengeMenu = document.getElementById('challenge-menu')
 
 export const createMenu = (callback, returnCallback) => {
   // reset preferred keys
@@ -62,4 +63,63 @@ export const hideMenu = async () => {
   await sleep(125)
   menu.style.visibility = 'hidden'
   removeChildElements(menu)
+}
+
+export const createChallengeMenu = (callback, createChallengeCallback, returnCallback) => {
+  // reset preferred keys
+  State.instance.preferredKeys = []
+
+  const backButton = makeDiv('back-button')
+  backButton.onclick = returnCallback
+  backButton.classList.add('menu-item-focused')
+  const backText = document.createElement('h1')
+  backText.innerText = 'Back'
+  backButton.appendChild(backText)
+  challengeMenu.appendChild(backButton)
+
+  const createChallengeButton = makeDiv('back-button')
+  createChallengeButton.onclick = createChallengeCallback
+  const ccText = document.createElement('h2')
+  ccText.innerText = 'Create Challenge'
+  createChallengeButton.appendChild(ccText)
+  challengeMenu.appendChild(createChallengeButton)
+
+  challengeMenu.style.opacity = 1
+  challengeMenu.style.visibility = 'visible'
+  State.instance.challenges.forEach((level, i) => {
+    const div = makeDiv('menu-item')
+    const leftDiv = makeDiv('menu-item-left')
+    const rightDiv = makeDiv('menu-item-right')
+
+    const title = document.createElement('h2')
+    const limit = document.createElement('h3')
+    const best = document.createElement('h3')
+    const completed = document.createElement('h4')
+
+    title.innerText = level.name
+    limit.innerText = `${level.limit / 1000}s`
+    best.innerHTML = level.complete
+      ? `Best: ${timeToDisplay(level.time)}`
+      : '&nbsp'
+    completed.innerText = level.complete ? 'COMPLETED' : ''
+
+    div.appendChild(leftDiv)
+    div.appendChild(rightDiv)
+
+    leftDiv.appendChild(title)
+    leftDiv.appendChild(best)
+    rightDiv.appendChild(limit)
+    rightDiv.appendChild(completed)
+
+    challengeMenu.appendChild(div)
+
+    div.onclick = () => playable ? callback(i) : () => {}
+  })
+}
+
+export const hideChallengeMenu = async () => {
+  challengeMenu.style.opacity = 0
+  await sleep(125)
+  challengeMenu.style.visibility = 'hidden'
+  removeChildElements(challengeMenu)
 }

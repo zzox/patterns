@@ -60,7 +60,7 @@ class State {
   deserialize () {
     // read from storage
     this.completedLevels = []
-    this.completedChallenges = []
+    this.challenges = []
   }
 }
 
