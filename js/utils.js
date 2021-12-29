@@ -1,6 +1,6 @@
 export const validKeys = 'abcdefghijklmnopqrstuvwxyz0123456789,./-='.split('')
 
-export const gebi = (id) => document.getElementById()
+export const gebi = (id) => document.getElementById(id)
 
 const modalElement = gebi('popup')
 const modalButtons = gebi('popup-buttons')
