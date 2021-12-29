@@ -1,7 +1,9 @@
 export const validKeys = 'abcdefghijklmnopqrstuvwxyz0123456789,./-='.split('')
 
-const modalElement = document.getElementById('popup')
-const modalButtons = document.getElementById('popup-buttons')
+export const gebi = (id) => document.getElementById()
+
+const modalElement = gebi('popup')
+const modalButtons = gebi('popup-buttons')
 
 export const makeDiv = (className) => {
   const div = document.createElement('div')
