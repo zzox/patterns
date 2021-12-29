@@ -1,9 +1,9 @@
 import { levels } from './levels.js'
 import State from './State.js'
-import { makeDiv, sleep, removeChildElements, timeToDisplay } from './utils.js'
+import { makeDiv, sleep, removeChildElements, timeToDisplay, gebi } from './utils.js'
 
-const menu = document.getElementById('menu')
-const challengeMenu = document.getElementById('challenge-menu')
+const menu = gebi('menu')
+const challengeMenu = gebi('challenge-menu')
 
 export const createMenu = (callback, returnCallback) => {
   // reset preferred keys
@@ -86,7 +86,7 @@ export const createChallengeMenu = (callback, createChallengeCallback, returnCal
 
   challengeMenu.style.opacity = 1
   challengeMenu.style.visibility = 'visible'
-  State.instance.challenges.forEach((level, i) => {
+  State.instance.challenges.forEach((challenge, i) => {
     const div = makeDiv('menu-item')
     const leftDiv = makeDiv('menu-item-left')
     const rightDiv = makeDiv('menu-item-right')
@@ -96,12 +96,12 @@ export const createChallengeMenu = (callback, createChallengeCallback, returnCal
     const best = document.createElement('h3')
     const completed = document.createElement('h4')
 
-    title.innerText = level.name
-    limit.innerText = `${level.limit / 1000}s`
-    best.innerHTML = level.complete
-      ? `Best: ${timeToDisplay(level.time)}`
+    title.innerText = challenge.name
+    limit.innerText = `${challenge.limit / 1000}s`
+    best.innerHTML = challenge.completed
+      ? `Best: ${timeToDisplay(challenge.time)}`
       : '&nbsp'
-    completed.innerText = level.complete ? 'COMPLETED' : ''
+    completed.innerText = challenge.completed ? 'COMPLETED' : ''
 
     div.appendChild(leftDiv)
     div.appendChild(rightDiv)
@@ -113,7 +113,7 @@ export const createChallengeMenu = (callback, createChallengeCallback, returnCal
 
     challengeMenu.appendChild(div)
 
-    div.onclick = () => playable ? callback(i) : () => {}
+    div.onclick = () => callback(i)
   })
 }
 

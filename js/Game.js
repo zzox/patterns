@@ -1,11 +1,11 @@
 import State from './State.js'
-import { makeDiv, removeChildElements, sleep, timeToDisplay, validKeys } from './utils.js'
+import { gebi, makeDiv, removeChildElements, sleep, timeToDisplay, validKeys } from './utils.js'
 
 const OPTIONS = 4
 const TAP = 'tap'
 const HIT_NOTE = 'hit-note'
 const MISS_NOTE = 'miss-note'
-const scrollBox = document.getElementById('scroll-box')
+const scrollBox = gebi('scroll-box')
 
 const createElements = (items) => {
   scrollBox.appendChild(makeDiv('clear-scroll'))
@@ -37,7 +37,7 @@ const createDialog = () => {
 }
 
 export class Game {
-  constructor ({ pattern, repetitions, limit }, levelIndex, win, lose) {
+  constructor ({ name, pattern, repetitions, limit }, levelIndex, win, lose, isChallenge = false) {
     let items = []
     for (let i = 0; i < repetitions; i++) {
       items = [...items, ...pattern]
@@ -45,11 +45,11 @@ export class Game {
 
     this.id = (Math.random() + '').slice(2)
 
-    removeChildElements(document.getElementById('scroll-box'))
+    removeChildElements(gebi('scroll-box'))
     createElements(items)
     this.tapButtons = Array.from(document.querySelectorAll('.tap-button'))
     this.hitElements = Array.from(document.querySelectorAll('.item-row'))
-    this.scrollBox = document.getElementById('scroll-box')
+    this.scrollBox = gebi('scroll-box')
     this.timerElement = createTimer()
     this.dialogElement = createDialog()
 
@@ -69,9 +69,13 @@ export class Game {
 
     this.scrollPos = this.scrollBox.scrollTop = this.scrollBox.scrollHeight
 
+    this.name = name
+    this.pattern = pattern
+    this.repetitions = repetitions
     this.items = items
     this.limit = limit
     this.levelIndex = levelIndex
+    this.isChallenge = isChallenge
     this.startTime = null
     this.endTime = null
     this.gameOver = false
@@ -133,12 +137,30 @@ export class Game {
 
       this.results.push(currentTime)
 
+      const challengeData = {
+        name: this.name,
+        pattern: this.pattern,
+        repetitions: this.repetitions,
+        limit: this.limit 
+      }
+
       if (!this.items.length) {
         this.endTime = currentTime
         this.scrollPos = 0
         this.gameOver = true
-        State.instance.winLevel({ index: this.levelIndex, time: currentTime })
-        this.winCallback(currentTime, this.levelIndex)
+        if (this.isChallenge) {
+          if (this.levelIndex === -1) {
+            this.levelIndex = State.instance.addChallenge(challengeData)
+          }
+          State.instance.winChallenge({ index: this.levelIndex, time: currentTime })
+        } else {
+          State.instance.winLevel({ index: this.levelIndex, time: currentTime })
+        }
+        this.winCallback(
+          currentTime,
+          this.levelIndex,
+          challengeData
+        )
       } else {
         // set the scroll to the next elements top + plus its height (to get it's bottom) and then subtract that by view height
         this.scrollPos = this.hitElements[this.items.length - 1].offsetTop + this.hitElements[this.items.length - 1].clientHeight - this.scrollBox.offsetHeight
@@ -225,7 +247,15 @@ export class Game {
   lose (time) {
     this.gameOver = true
     this.endTime = time
-    this.loseCallback(this.levelIndex)
+    this.loseCallback(
+      this.levelIndex,
+      {
+        name: this.name,
+        pattern: this.pattern,
+        repetitions: this.repetitions,
+        limit: this.limit 
+      }
+    )
   }
 
   destroy () {

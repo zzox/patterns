@@ -36,7 +36,18 @@
     </main>
     <main id="menu"></main>
     <main id="challenge-menu"></main>
-    <main id="create-challenge"></main>
+    <main class="modal" id="create-challenge">
+      <p>Name</p>
+      <input id="challenge-name"></input>
+      <p>Pattern (e.g. 12131413)</p>
+      <input id="challenge-pattern"></input>
+      <p>Repetitions</p>
+      <input id="challenge-repetitions"></input>
+      <p>Limit (in miliseconds)</p>
+      <input id="challenge-limit"></input>
+      <button id="challenge-submit">Submit</button>
+      <p class="error-text" id="challenge-error"></p>
+    </main>
   </div>
   <script type="module" src="js/main.js"></script>
 </body>

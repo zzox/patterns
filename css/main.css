@@ -41,8 +41,6 @@ main {
 
 .modal {
   position: absolute;
-  background-color: var(--bg2);
-  height: var(--view-height);
   opacity: 1;
   transition: opacity 250ms, background-color 250ms;
   align-items: center;
@@ -94,6 +92,17 @@ button:hover {
   font-size: 1.5rem;
   padding: 1rem;
   border: var(--bg2) 2px solid;
+}
+
+input {
+  background-color: var(--bg2);
+  border-bottom: var(--text-color) 2px solid;
+  height: 2rem;
+  color: var(--text-color);
+  width: 66%;
+  max-width: 90%;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .scroll-box {
@@ -241,6 +250,10 @@ button:hover {
 
 .non-playable:hover {
   background-color: var(--bg2);
+}
+
+.error-text {
+  color: var(--error-color);
 }
 
 #timer {

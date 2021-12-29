@@ -2,15 +2,17 @@ import { levels } from './levels.js'
 import { Game } from './Game.js'
 import State from './State.js'
 import { createMenu, hideMenu, createChallengeMenu, hideChallengeMenu } from './menu.js'
-import { hideElement, removeChildElements, showElement, showModal, sleep, timeToDisplay } from './utils.js'
+import { gebi, hideElement, removeChildElements, showElement, showModal, sleep, timeToDisplay } from './utils.js'
 
-const startButton = document.getElementById('start')
-const challengesButton = document.getElementById('challenges')
-const startMenu = document.getElementById('intro')
-const modalElement = document.getElementById('popup')
-const menuElement = document.getElementById('menu')
-const challengesElement = document.getElementById('challenge-menu')
-const createChallengeElement = document.getElementById('create-challenge')
+const startButton = gebi('start')
+const challengesButton = gebi('challenges')
+const startMenu = gebi('intro')
+const modalElement = gebi('popup')
+const menuElement = gebi('menu')
+const challengesElement = gebi('challenge-menu')
+const createChallengeElement = gebi('create-challenge')
+const createChallengeButton = gebi('challenge-submit')
+const errorTextElement = gebi('challenge-error')
 
 let game, keyListener
 let menuItemSelected = null
@@ -21,7 +23,6 @@ const destroyGame = () => {
 }
 
 const gotoMainMenu = async () => {
-  console.log('trying')
   try {
     destroyGame()
   } catch (e) {}
@@ -38,7 +39,6 @@ const removeListener = () => {
 }
 
 const keydownListener = (restartCallback, escapeCallback, nextCallback) => (event) => {
-  event.preventDefault()
   switch (event.key) {
     case 'Enter':
       if (nextCallback) {
@@ -123,6 +123,61 @@ const lose = async (levelIndex) => {
   destroyGame()
 }
 
+const winChallenge = async (time, levelIndex, challengeData) => {
+  const isNewlyCompleted = levelIndex === -1
+  await sleep(500)
+
+  const restartCallback = () => {
+    startChallenge(levelIndex)
+    hideElement(modalElement)
+    removeListener()
+  }
+
+  const escapeCallback = () => {
+    createChallengeMenu(startChallenge, createChallenge, gotoMainMenu)
+    menuItemSelected = 0
+    hideElement(modalElement)
+    removeListener()
+  }
+
+  keyListener = keydownListener(isNewlyCompleted ? () => {} : restartCallback, escapeCallback)
+  document.addEventListener('keydown', keyListener)
+
+  showModal(isNewlyCompleted ? 'Challenge created!' : 'Win!', timeToDisplay(time), [
+    { label: 'Challenge Select', callback: escapeCallback }
+  ])
+
+  destroyGame()
+}
+
+const loseChallenge = async (levelIndex, challengeData) => {
+
+  await sleep(500)
+
+  const restartCallback = () => {
+    startChallenge(levelIndex, challengeData)
+    hideElement(modalElement)
+    removeListener()
+  }
+
+  const escapeCallback = () => {
+    createChallengeMenu(startChallenge, createChallenge, gotoMainMenu)
+    menuItemSelected = 0
+    hideElement(modalElement)
+    removeListener()
+  }
+
+  keyListener = keydownListener(restartCallback, escapeCallback)
+  document.addEventListener('keydown', keyListener)
+
+  showModal('Lose...', undefined, [
+    { label: '[R]estart', callback: restartCallback },
+    { label: 'Challenge Select', callback: escapeCallback }
+  ])
+
+  destroyGame()
+}
+
 const startLevel = (index) => {
   // HACK: should not be needed
   if (!game) {
@@ -138,11 +193,17 @@ const startLevel = (index) => {
   }
 }
 
-const startChallenge = (index) => {
+const startChallenge = (index, challengeData) => {
   if (!game) {
-    game = new Game(State.instance.challenges[index], index, ()=>console.log('challenge won'), ()=>console.log('challenge lost'))
+    game = new Game(
+      index === -1 ? challengeData : State.instance.challenges[index],
+      index,
+      winChallenge,
+      loseChallenge,
+      true
+    )
     startMenu.style.opacity = 0
-    hideMenu()
+    hideChallengeMenu()
     menuItemSelected = null
   } else {
     console.warn(
@@ -159,8 +220,6 @@ const createChallenge = () => {
 
 const run = () => {
   document.addEventListener('keydown', (event) => {
-    event.preventDefault()
-
     const key = event.key
     if (menuItemSelected !== null && ['ArrowUp', 'ArrowDown', 'Enter'].includes(key)) {
       const menuType = menuElement.style.visibility === 'visible' ? 'main' : 'challenge'
@@ -203,7 +262,6 @@ const run = () => {
   })
 
   document.addEventListener('keyup', (event) => {
-    event.preventDefault()
     try {
       game.keyReleased(event.key)
     } catch (e) {}
@@ -241,6 +299,26 @@ const run = () => {
     }
 
     hideElement(startMenu)
+  }
+
+  createChallengeButton.onclick = () => {
+    try {
+      const name = gebi('challenge-name').value
+      const pattern = gebi('challenge-pattern').value.split('').map(char => parseInt(char))
+      const repetitions = parseInt(gebi('challenge-repetitions').value)
+      const limit = parseInt(gebi('challenge-limit').value)
+      const errorTextElement = gebi('challenge-error')
+      if (!name || !pattern || !repetitions || isNaN(repetitions) || !limit || isNaN(limit)) {
+        throw new Error('Bad Input.')
+      }
+
+      errorTextElement.innerText = ''
+      startChallenge(-1, { name, pattern, repetitions, limit })
+      hideElement(createChallengeElement)
+    } catch (e) {
+      errorTextElement.innerText = 'Error, please try again.'
+      return
+    }
   }
 }
 

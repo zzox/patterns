@@ -32,18 +32,13 @@ class State {
     return this.challenges.length - 1
   }
 
-  winChallenge ({ index, time, challengeData }) {
-    // if winning a challenge we created
-    if (challengeData) {
-      this.challenges.push({ ...challengeData, time, completed: true })
+  winChallenge ({ index, time }) {
+    if (this.challenges[index].completed && time < this.challenges[index].time) {
+      this.challenges[index].time = time
+      return NEW_BEST
     } else {
-      if (this.challenges[index].completed && time < this.challenges[index].time) {
-        this.challenges[index].time = time
-        return NEW_BEST
-      } else {
-        this.challenges[index].completed = true
-        this.challenges[index].time = time
-      }
+      this.challenges[index].completed = true
+      this.challenges[index].time = time
     }
 
     this.serialize()
@@ -51,10 +46,10 @@ class State {
 
   serialize () {
     // write to storage
-    JSON.stringify({
+    console.log('serializing', JSON.stringify({
       completedLevels: this.completedLevels,
       challenges: this.challenges
-    })
+    }))
   }
 
   deserialize () {
