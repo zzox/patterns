@@ -63,7 +63,7 @@ const keydownListener = (restartCallback, escapeCallback, nextCallback) => (even
   }
 }
 
-const win = async (time, levelIndex) => {
+const win = async (time, levelIndex, newBest = false) => {
   await sleep(500)
 
   const nextCallback = () => {
@@ -88,7 +88,9 @@ const win = async (time, levelIndex) => {
   keyListener = keydownListener(restartCallback, escapeCallback, nextCallback)
   document.addEventListener('keydown', keyListener)
 
-  showModal('Win!', timeToDisplay(time), [
+  const displayTime = `${newBest ? 'New Best: ' : ''}${timeToDisplay(time)}`
+
+  showModal('Win!', displayTime, [
     { label: '[N]ext', callback: nextCallback },
     { label: 'Level Select', callback: escapeCallback }
   ])
@@ -123,7 +125,7 @@ const lose = async (levelIndex) => {
   destroyGame()
 }
 
-const winChallenge = async (time, levelIndex, challengeData) => {
+const winChallenge = async (time, levelIndex, newBest = false) => {
   const isNewlyCompleted = levelIndex === -1
   await sleep(500)
 
@@ -143,7 +145,9 @@ const winChallenge = async (time, levelIndex, challengeData) => {
   keyListener = keydownListener(isNewlyCompleted ? () => {} : restartCallback, escapeCallback)
   document.addEventListener('keydown', keyListener)
 
-  showModal(isNewlyCompleted ? 'Challenge created!' : 'Win!', timeToDisplay(time), [
+  const displayTime = `${newBest ? 'New Best: ' : ''}${timeToDisplay(time)}`
+
+  showModal(isNewlyCompleted ? 'Challenge created!' : 'Win!', displayTime, [
     { label: 'Challenge Select', callback: escapeCallback }
   ])
 
