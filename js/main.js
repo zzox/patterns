@@ -11,7 +11,7 @@ const modalElement = gebi('popup')
 const menuElement = gebi('menu')
 const challengesElement = gebi('challenge-menu')
 const createChallengeElement = gebi('create-challenge')
-const createChallengeButton = gebi('challenge-submit')
+const challengeForm = gebi('challenge-form')
 const errorTextElement = gebi('challenge-error')
 
 let game, keyListener
@@ -222,39 +222,52 @@ const createChallenge = () => {
   showElement(createChallengeElement)
 }
 
+const createPattern = (pattern) =>
+  pattern.split('')
+    .map((item) => {
+      const value = parseInt(item)
+      if (typeof value !== 'number' || isNaN(value) || value < 1 || value > 4) {
+        throw new Error('Non 1-4 number in pattern')
+      }
+      return value
+    })
+
 const run = () => {
   document.addEventListener('keydown', (event) => {
     const key = event.key
-    if (menuItemSelected !== null && ['ArrowUp', 'ArrowDown', 'Enter'].includes(key)) {
-      const menuType = menuElement.style.visibility === 'visible' ? 'main' : 'challenge'
-      const numLevels = menuType === 'main'
-        ? State.instance.completedLevels.length
-        : State.instance.challenges.length + 1
-      const menuItems = menuType === 'main'
-        ? Array.from(menuElement.children)
-        : Array.from(challengesElement.children)
-      menuItems.forEach(item => { item.classList.remove('menu-item-focused')})
 
-      if (key === 'ArrowUp') {
-        menuItemSelected--
-        if (menuItemSelected < 0) {
-          // includes back button
-          menuItemSelected = numLevels + 1
+    if (['ArrowUp', 'ArrowDown', 'Enter'].includes(key)) {
+      if (menuItemSelected !== null) {
+        const menuType = menuElement.style.visibility === 'visible' ? 'main' : 'challenge'
+        const numLevels = menuType === 'main'
+          ? State.instance.completedLevels.length
+          : State.instance.challenges.length + 1
+        const menuItems = menuType === 'main'
+          ? Array.from(menuElement.children)
+          : Array.from(challengesElement.children)
+        menuItems.forEach(item => { item.classList.remove('menu-item-focused')})
+
+        if (key === 'ArrowUp') {
+          menuItemSelected--
+          if (menuItemSelected < 0) {
+            // includes back button
+            menuItemSelected = numLevels + 1
+          }
         }
-      }
 
-      if (key === 'ArrowDown') {
-        menuItemSelected++
-        if (menuItemSelected > numLevels + 1) {
-          menuItemSelected = 0
+        if (key === 'ArrowDown') {
+          menuItemSelected++
+          if (menuItemSelected > numLevels + 1) {
+            menuItemSelected = 0
+          }
         }
-      }
 
-      menuItems[menuItemSelected].classList.add('menu-item-focused')
-      menuItems[menuItemSelected].scrollIntoView()
+        menuItems[menuItemSelected].classList.add('menu-item-focused')
+        menuItems[menuItemSelected].scrollIntoView()
 
-      if (key === 'Enter') {
-        menuItems[menuItemSelected].click()
+        if (key === 'Enter') {
+          menuItems[menuItemSelected].click()
+        }
       }
     }
 
@@ -305,10 +318,11 @@ const run = () => {
     hideElement(startMenu)
   }
 
-  createChallengeButton.onclick = () => {
+  challengeForm.onsubmit = (event) => {
+    event.preventDefault()
     try {
       const name = gebi('challenge-name').value
-      const pattern = gebi('challenge-pattern').value.split('').map(char => parseInt(char))
+      const pattern = createPattern(gebi('challenge-pattern').value)
       const repetitions = parseInt(gebi('challenge-repetitions').value)
       const limit = parseInt(gebi('challenge-limit').value)
       const errorTextElement = gebi('challenge-error')
@@ -316,9 +330,13 @@ const run = () => {
         throw new Error('Bad Input.')
       }
 
-      errorTextElement.innerText = ''
       startChallenge(-1, { name, pattern, repetitions, limit })
       hideElement(createChallengeElement)
+      errorTextElement.innerText = ''
+      gebi('challenge-name').value = ''
+      gebi('challenge-pattern').value = ''
+      gebi('challenge-repetitions').value = ''
+      gebi('challenge-limit').value = ''
     } catch (e) {
       errorTextElement.innerText = 'Error, please try again.'
       return

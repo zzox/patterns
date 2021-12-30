@@ -39,6 +39,12 @@ main {
   scrollbar-width: none;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .modal {
   position: absolute;
   opacity: 1;
