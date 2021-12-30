@@ -11,6 +11,7 @@ const modalElement = gebi('popup')
 const menuElement = gebi('menu')
 const challengesElement = gebi('challenge-menu')
 const createChallengeElement = gebi('create-challenge')
+const challengeBackButton = gebi('create-challenge-back')
 const challengeForm = gebi('challenge-form')
 const errorTextElement = gebi('challenge-error')
 
@@ -236,38 +237,40 @@ const run = () => {
   document.addEventListener('keydown', (event) => {
     const key = event.key
 
-    if (['ArrowUp', 'ArrowDown', 'Enter'].includes(key)) {
-      if (menuItemSelected !== null) {
-        const menuType = menuElement.style.visibility === 'visible' ? 'main' : 'challenge'
-        const numLevels = menuType === 'main'
-          ? State.instance.completedLevels.length
-          : State.instance.challenges.length + 1
-        const menuItems = menuType === 'main'
-          ? Array.from(menuElement.children)
-          : Array.from(challengesElement.children)
-        menuItems.forEach(item => { item.classList.remove('menu-item-focused')})
+    if (menuItemSelected !== null && ['Escape', 'ArrowUp', 'ArrowDown', 'Enter'].includes(key)) {
+      const menuType = menuElement.style.visibility === 'visible' ? 'main' : 'challenge'
+      const numLevels = menuType === 'main'
+        ? State.instance.completedLevels.length
+        : State.instance.challenges.length + 1
+      const menuItems = menuType === 'main'
+        ? Array.from(menuElement.children)
+        : Array.from(challengesElement.children)
+      menuItems.forEach(item => { item.classList.remove('menu-item-focused')})
 
-        if (key === 'ArrowUp') {
-          menuItemSelected--
-          if (menuItemSelected < 0) {
-            // includes back button
-            menuItemSelected = numLevels + 1
-          }
+      if (key === 'ArrowUp') {
+        menuItemSelected--
+        if (menuItemSelected < 0) {
+          // includes back button
+          menuItemSelected = numLevels + 1
         }
+      }
 
-        if (key === 'ArrowDown') {
-          menuItemSelected++
-          if (menuItemSelected > numLevels + 1) {
-            menuItemSelected = 0
-          }
+      if (key === 'ArrowDown') {
+        menuItemSelected++
+        if (menuItemSelected > numLevels + 1) {
+          menuItemSelected = 0
         }
+      }
 
-        menuItems[menuItemSelected].classList.add('menu-item-focused')
-        menuItems[menuItemSelected].scrollIntoView()
+      menuItems[menuItemSelected].classList.add('menu-item-focused')
+      menuItems[menuItemSelected].scrollIntoView()
 
-        if (key === 'Enter') {
-          menuItems[menuItemSelected].click()
-        }
+      if (key === 'Enter') {
+        menuItems[menuItemSelected].click()
+      }
+
+      if (key === 'Escape') {
+        menuItems[0].click()
       }
     }
 
@@ -341,6 +344,12 @@ const run = () => {
       errorTextElement.innerText = 'Error, please try again.'
       return
     }
+  }
+
+  challengeBackButton.onclick = () => {
+    hideElement(createChallengeElement)
+    menuItemSelected = 0
+    createChallengeMenu(startChallenge, createChallenge, gotoMainMenu)
   }
 }
 
