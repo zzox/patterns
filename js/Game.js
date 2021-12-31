@@ -79,6 +79,7 @@ export class Game {
     this.startTime = null
     this.endTime = null
     this.gameOver = false
+    this.nearEnd = false
     this.results = []
 
     this.winCallback = win
@@ -114,6 +115,11 @@ export class Game {
       this.timerElement.innerHTML = timeToDisplay(currentTime)
     } else {
       this.timerElement.innerHTML = timeToDisplay(this.endTime > this.limit ? this.limit : this.endTime)
+    }
+
+    if (!this.nearEnd && this.startTime && currentTime / this.limit > 0.8) {
+      this.timerElement.classList.add('soft-red')
+      this.nearEnd = true
     }
 
     if (!this.gameOver) {
