@@ -312,6 +312,10 @@ input {
   #create-challenge-back {
     top: 5rem;
   }
+
+  .back-button {
+    margin-top: 5rem;
+  }
 }
 
 .soft-red {
