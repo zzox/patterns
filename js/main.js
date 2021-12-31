@@ -9,6 +9,7 @@ const challengesButton = gebi('challenges')
 const startMenu = gebi('intro')
 const modalElement = gebi('popup')
 const menuElement = gebi('menu')
+const mainElement = gebi('main')
 const challengesElement = gebi('challenge-menu')
 const createChallengeElement = gebi('create-challenge')
 const challengeBackButton = gebi('create-challenge-back')
@@ -19,6 +20,7 @@ let game, keyListener
 let menuItemSelected = null
 
 const destroyGame = () => {
+  hideElement(mainElement)
   game.destroy()
   game = null
 }
@@ -186,6 +188,7 @@ const loseChallenge = async (levelIndex, challengeData) => {
 const startLevel = (index) => {
   // HACK: should not be needed
   if (!game) {
+    showElement(mainElement)
     game = new Game(levels[index], index, win, lose)
     startMenu.style.opacity = 0
     hideMenu()
@@ -200,6 +203,7 @@ const startLevel = (index) => {
 
 const startChallenge = (index, challengeData) => {
   if (!game) {
+    showElement(mainElement)
     game = new Game(
       index === -1 ? challengeData : State.instance.challenges[index],
       index,
