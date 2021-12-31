@@ -353,5 +353,4 @@ const run = () => {
   }
 }
 
-// TODO: remove run function if we don't need anything async
 run()

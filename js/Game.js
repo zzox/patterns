@@ -150,7 +150,9 @@ export class Game {
         limit: this.limit 
       }
 
-      if (!this.items.length) {
+      // if no items left _and_ the off chance we are over the limit
+      // but we have not hit the update frame to catch us
+      if (!this.items.length && currentTime <= this.limit) {
         this.endTime = currentTime
         this.scrollPos = 0
         this.gameOver = true
