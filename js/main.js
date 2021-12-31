@@ -233,6 +233,13 @@ const createPattern = (pattern) =>
       return value
     })
 
+// HACK: disable double tap to zoom on touch events for tap-buttons only
+const touchEventHandlers = (event) => {
+  if (event.target.className.split(' ')[0] === 'tap-button') {
+    event.preventDefault()
+  }
+}
+
 const run = () => {
   document.addEventListener('keydown', (event) => {
     const key = event.key
@@ -286,6 +293,9 @@ const run = () => {
       game.keyReleased(event.key)
     } catch (e) {}
   })
+
+  document.addEventListener('touchstart', (event) => touchEventHandlers(event))
+  document.addEventListener('touchend', (event) => touchEventHandlers(event))
 
   Array.from(document.querySelectorAll('.tap-button')).forEach((button, i) => {
     button.addEventListener('pointerdown', (event) => {

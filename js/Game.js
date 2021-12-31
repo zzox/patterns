@@ -147,7 +147,7 @@ export class Game {
         name: this.name,
         pattern: this.pattern,
         repetitions: this.repetitions,
-        limit: this.limit 
+        limit: this.limit
       }
 
       // if no items left _and_ the off chance we are over the limit
@@ -263,7 +263,7 @@ export class Game {
         name: this.name,
         pattern: this.pattern,
         repetitions: this.repetitions,
-        limit: this.limit 
+        limit: this.limit
       }
     )
   }

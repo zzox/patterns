@@ -11,12 +11,15 @@
   --one-sixteenth-height: calc(var(--view-height) / 16);
 }
 
+* {
+  touch-action: manipulation;
+}
+
 body {
   font-family: "Lexend", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   background-color: var(--bg1);
   color: var(--text-color);
   margin: 0;
-  touch-action: manipulation;
 }
 
 .container {
@@ -135,18 +138,17 @@ input {
   flex-basis: 25%;
   border: var(--bg1) 2px solid;
   background-color: var(--bg2);
-  border-radius: 12.5%;
+  border-radius: 25%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 3rem;
   transition: font-size 50ms, background-color 50ms border-radius 50ms;
-  touch-action: none;
 }
 
 .pressed {
   font-size: 2.5rem;
-  border-radius: 25%;
+  border-radius: 37.5%;
   background-color: var(--highlight-color);
 }
 
