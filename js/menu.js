@@ -77,7 +77,7 @@ export const createChallengeMenu = (callback, createChallengeCallback, returnCal
   backButton.appendChild(backText)
   challengeMenu.appendChild(backButton)
 
-  const createChallengeButton = makeDiv('create-challenge')
+  const createChallengeButton = makeDiv('create-challenge-button')
   createChallengeButton.onclick = createChallengeCallback
   const ccText = document.createElement('h2')
   ccText.innerText = 'Create Challenge'

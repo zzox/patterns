@@ -8,6 +8,7 @@ const startButton = gebi('start')
 const challengesButton = gebi('challenges')
 const startMenu = gebi('intro')
 const modalElement = gebi('popup')
+const aboutElement = gebi('about')
 const menuElement = gebi('menu')
 const mainElement = gebi('main')
 const challengesElement = gebi('challenge-menu')
@@ -15,6 +16,8 @@ const createChallengeElement = gebi('create-challenge')
 const challengeBackButton = gebi('create-challenge-back')
 const challengeForm = gebi('challenge-form')
 const errorTextElement = gebi('challenge-error')
+const aboutButton = gebi('about-game')
+const aboutBackButton = gebi('about-back')
 
 let game, keyListener
 let menuItemSelected = null
@@ -128,8 +131,7 @@ const lose = async (levelIndex) => {
   destroyGame()
 }
 
-const winChallenge = async (time, levelIndex, newBest = false) => {
-  const isNewlyCompleted = levelIndex === -1
+const winChallenge = async (time, levelIndex, newBest = false, isNewlyCompleted = false) => {
   await sleep(500)
 
   const restartCallback = () => {
@@ -364,6 +366,16 @@ const run = () => {
     hideElement(createChallengeElement)
     menuItemSelected = 0
     createChallengeMenu(startChallenge, createChallenge, gotoMainMenu)
+  }
+
+  aboutButton.onclick = () => {
+    showElement(aboutElement)
+    hideElement(startMenu)
+  }
+
+  aboutBackButton.onclick = () => {
+    hideElement(aboutElement)
+    gotoMainMenu()
   }
 }
 

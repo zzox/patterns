@@ -25,7 +25,7 @@
       </p>
       <button id="start">Levels</button>
       <button id="challenges">Challenges</button>
-      <button id="about">About</button>
+      <button id="about-game">About</button>
       <p id="version-number">v0.3.0</p>
     </main>
     <main class="modal" id="popup">
@@ -37,7 +37,7 @@
     <main id="menu"></main>
     <main id="challenge-menu"></main>
     <main class="modal" id="create-challenge">
-      <button id="create-challenge-back">Back</button>
+      <button id="create-challenge-back" class="menu-back">Back</button>
       <form id="challenge-form">
         <p>Name</p>
         <input id="challenge-name"></input>
@@ -50,6 +50,28 @@
         <button id="challenge-submit" type="submit">Submit</button>
         <p class="error-text" id="challenge-error"></p>
       </form>
+    </main>
+    <main class="modal" id="about">
+      <button id="about-back" class="menu-back">Back</button>
+      <h1>About</h1>
+      <p>
+        Use the keyboard (or tap any bottom button on mobile) to bind your keys to the buttons before starting.
+        Tap the button or key according to the closest note, and click all before the time limit is up.
+        Challenges can be created and sent to others via a URL, but you must complete the challenge first.
+      </p>
+      <p>
+        patterns is made in HTML5, CSS, and Javascript and source code is available
+        <a href="https://github.com/zzox/patterns" rel="noopener noreferrer" target="_blank">here</a>.
+        It is covered under the MIT license, feel free to alter/mod it as you please.  Reach out on
+        <a href="https://twitter.com/zzo__x" rel="noopener noreferrer" target="_blank">twitter</a>
+        if you have any questsions.
+        <p>
+          I have other games available on
+          <a href="https://zzox.itch.io" rel="noopener noreferrer" target="_blank">twitter</a>
+          and
+          <a href="https://zzox.newgrounds.com" rel="noopener noreferrer" target="_blank">newgrounds</a>.
+        </p>
+      </p>
     </main>
   </div>
   <script type="module" src="js/main.js"></script>
