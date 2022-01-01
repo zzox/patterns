@@ -26,6 +26,11 @@ body {
   display: flex;
   justify-content: center;
   height: var(--view-height);
+  scrollbar-width: none;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
 }
 
 main {

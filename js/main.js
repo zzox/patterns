@@ -302,6 +302,8 @@ const run = () => {
 
   document.addEventListener('touchstart', (event) => touchEventHandlers(event))
   document.addEventListener('touchend', (event) => touchEventHandlers(event))
+  document.addEventListener('touchcancel', (event) => touchEventHandlers(event, false))
+  document.addEventListener('touchmove', (event) => touchEventHandlers(event, false))
 
   Array.from(document.querySelectorAll('.tap-button')).forEach((button, i) => {
     button.addEventListener('pointerdown', (event) => {
