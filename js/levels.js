@@ -1,14 +1,14 @@
 export const levels = [
   { name: 'All Up', pattern: [1, 2, 3, 4], repetitions: 4, limit: 10000 },
   { name: 'Ten-Tap', pattern: [1], repetitions: 10, limit: 5000 },
-  // { name: 'Thumb-up', pattern: [1, 2, 1, 3, 1, 4, 1, 3], repetitions: 4, limit: 10000 },
-  // { name: 'Split-Tap', pattern: [1, 2], repetitions: 1, limit: 250 },
-  // { name: 'All Up 2', pattern: [1, 2, 3, 4], repetitions: 8, limit: 12500 },
-  // { name: 'Ten-Tap 2', pattern: [1], repetitions: 10, limit: 5000 },
-  // { name: 'Thumb-up 2', pattern: [1, 2, 1, 3, 1, 4, 1, 3], repetitions: 4, limit: 8000 },
-  // { name: 'Split-Tap 2', pattern: [1, 2], repetitions: 1, limit: 200 },
-  // { name: 'All Up 3', pattern: [1, 2, 3, 4], repetitions: 8, limit: 8000 },
-  // { name: 'Ten-Tap 3', pattern: [1], repetitions: 10, limit: 5000 },
-  // { name: 'Thumb-up 3', pattern: [1, 2, 1, 3, 1, 4, 1, 3], repetitions: 8, limit: 12000 },
-  // { name: 'Split-Tap 3', pattern: [1, 2], repetitions: 1, limit: 150 }
+  { name: 'Thumb-up', pattern: [1, 2, 1, 3, 1, 4, 1, 3], repetitions: 4, limit: 10000 },
+  { name: 'Split-Tap', pattern: [1, 2], repetitions: 1, limit: 250 },
+  { name: 'All Up 2', pattern: [1, 2, 3, 4], repetitions: 8, limit: 12500 },
+  { name: 'Ten-Tap 2', pattern: [1], repetitions: 10, limit: 5000 },
+  { name: 'Thumb-up 2', pattern: [1, 2, 1, 3, 1, 4, 1, 3], repetitions: 4, limit: 8000 },
+  { name: 'Split-Tap 2', pattern: [1, 2], repetitions: 1, limit: 200 },
+  { name: 'All Up 3', pattern: [1, 2, 3, 4], repetitions: 8, limit: 8000 },
+  { name: 'Ten-Tap 3', pattern: [1], repetitions: 10, limit: 5000 },
+  { name: 'Thumb-up 3', pattern: [1, 2, 1, 3, 1, 4, 1, 3], repetitions: 8, limit: 12000 },
+  { name: 'Split-Tap 3', pattern: [1, 2], repetitions: 1, limit: 150 }
 ]

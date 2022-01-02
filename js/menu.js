@@ -1,6 +1,6 @@
 import { levels } from './levels.js'
 import State from './State.js'
-import { makeDiv, sleep, removeChildElements, timeToDisplay, gebi } from './utils.js'
+import { makeDiv, sleep, removeChildElements, timeToDisplay, gebi, assembleChallengeUrl } from './utils.js'
 
 const menu = gebi('menu')
 const challengeMenu = gebi('challenge-menu')
@@ -103,8 +103,21 @@ export const createChallengeMenu = (callback, createChallengeCallback, returnCal
       : '&nbsp'
     completed.innerText = challenge.completed ? 'COMPLETED' : ''
 
+    const link = assembleChallengeUrl(challenge)
+
+    const copyButton = document.createElement('button')
+    copyButton.classList.add('challenge-link')
+    copyButton.innerText = 'Copy Challenge Link'
+    copyButton.onclick = (event) => {
+      event.stopPropagation()
+      navigator.clipboard.writeText(link).then(() => {
+        copyButton.innerText = 'Copied!'
+      })
+    }
+
     div.appendChild(leftDiv)
     div.appendChild(rightDiv)
+    div.appendChild(copyButton)
 
     leftDiv.appendChild(title)
     leftDiv.appendChild(best)

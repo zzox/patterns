@@ -48,3 +48,13 @@ export const hideElement = async (element) => {
   await sleep(125)
   element.style.visibility = 'hidden'
 }
+
+export const assembleChallengeUrl = ({ name, limit, pattern, repetitions }) => {
+  const queryParams = new URLSearchParams()
+  queryParams.append('name', name)
+  queryParams.append('limit', limit)
+  queryParams.append('pattern', pattern.join(''))
+  queryParams.append('repetitions', repetitions)
+
+  return `${window.location.href}?${queryParams.toString()}`
+}

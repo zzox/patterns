@@ -331,3 +331,7 @@ input {
 .soft-red {
   color: #ff6161;
 }
+
+.challenge-link {
+  width: 100%;
+}

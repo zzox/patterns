@@ -162,7 +162,6 @@ const winChallenge = async (time, levelIndex, newBest = false, isNewlyCompleted 
 }
 
 const loseChallenge = async (levelIndex, challengeData) => {
-
   await sleep(500)
 
   const restartCallback = () => {
@@ -248,6 +247,34 @@ const touchEventHandlers = (event) => {
   }
 }
 
+const checkChallengeUrl = () => {
+  const params = new URLSearchParams(window.location.search)
+  const name = params.get('name')
+  let pattern = params.get('pattern')
+  let limit = params.get('limit')
+  let repetitions = params.get('repetitions')
+
+  if (name && pattern && limit && repetitions) {
+    pattern = createPattern(pattern)
+    limit = parseInt(limit)
+    repetitions = parseInt(repetitions)
+
+    const existingIndex = State.instance.challenges.findIndex((challenge) =>
+      name === challenge.name &&
+      pattern === challenge.pattern &&
+      limit === challenge.limit &&
+      repetitions === challenge.repetitions
+    )
+
+    if (existingIndex === -1) {
+      State.instance.addChallenge({ name, pattern, limit, repetitions })
+      startChallenge(State.instance.challenges.length - 1)
+    } else {
+      startChallenge(existingIndex)
+    }
+  }
+}
+
 const run = () => {
   document.addEventListener('keydown', (event) => {
     const key = event.key
@@ -260,7 +287,7 @@ const run = () => {
       const menuItems = menuType === 'main'
         ? Array.from(menuElement.children)
         : Array.from(challengesElement.children)
-      menuItems.forEach(item => { item.classList.remove('menu-item-focused')})
+      menuItems.forEach(item => { item.classList.remove('menu-item-focused') })
 
       if (key === 'ArrowUp') {
         menuItemSelected--
@@ -362,7 +389,6 @@ const run = () => {
       gebi('challenge-limit').value = ''
     } catch (e) {
       errorTextElement.innerText = 'Error, please try again.'
-      return
     }
   }
 
@@ -384,3 +410,4 @@ const run = () => {
 }
 
 run()
+checkChallengeUrl()
