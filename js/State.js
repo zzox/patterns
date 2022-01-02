@@ -45,17 +45,19 @@ class State {
   }
 
   serialize () {
-    // write to storage
-    console.log('serializing', JSON.stringify({
+    localStorage.setItem(patternsToken, JSON.stringify({
       completedLevels: this.completedLevels,
       challenges: this.challenges
     }))
   }
 
   deserialize () {
-    // read from storage
-    this.completedLevels = []
-    this.challenges = []
+    let storage = localStorage.getItem(patternsToken)
+    const exists = storage != null
+    storage = JSON.parse(storage)
+
+    this.completedLevels = exists ? storage.completedLevels : []
+    this.challenges = exists ? storage.challenges : []
   }
 }
 
