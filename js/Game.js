@@ -1,4 +1,5 @@
 import State from './State.js'
+import Audio from './Audio.js'
 import { gebi, makeDiv, removeChildElements, sleep, timeToDisplay, validKeys } from './utils.js'
 
 const OPTIONS = 4
@@ -6,6 +7,9 @@ const TAP = 'tap'
 const HIT_NOTE = 'hit-note'
 const MISS_NOTE = 'miss-note'
 const scrollBox = gebi('scroll-box')
+
+const correctNotes = ['C1', 'D1', 'E1', 'G1', 'A1', 'C2', 'D2']
+const pickNote = (key, measure) => correctNotes[measure % 4 + key - 1]
 
 const createElements = (items) => {
   scrollBox.appendChild(makeDiv('clear-scroll'))
@@ -135,11 +139,16 @@ export class Game {
     const item = this.items.shift()
     if (item !== key) {
       this.lose(currentTime)
+      Audio.instance.playSound('Cs')
       return MISS_NOTE
     } else {
       if (!this.startTime) {
         this.startTime = Date.now()
       }
+
+      Audio.instance.playSound(
+        pickNote(key, Math.floor(this.results.length / this.pattern.length))
+      )
 
       this.results.push(currentTime)
 
@@ -173,6 +182,8 @@ export class Game {
           newBest,
           isNewlyCompleted
         )
+
+        Audio.instance.playSound('Cmaj7')
       } else {
         // set the scroll to the next elements top + plus its height (to get it's bottom) and then subtract that by view height
         this.scrollPos = this.hitElements[this.items.length - 1].offsetTop + this.hitElements[this.items.length - 1].clientHeight - this.scrollBox.offsetHeight
@@ -268,6 +279,8 @@ export class Game {
         limit: this.limit
       }
     )
+
+    Audio.instance.playSound('Emin7')
   }
 
   destroy () {

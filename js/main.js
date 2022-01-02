@@ -1,6 +1,7 @@
+import Audio from './Audio.js'
+import State from './State.js'
 import { levels } from './levels.js'
 import { Game } from './Game.js'
-import State from './State.js'
 import { createMenu, hideMenu, createChallengeMenu, hideChallengeMenu } from './menu.js'
 import { gebi, hideElement, removeChildElements, showElement, showModal, sleep, timeToDisplay } from './utils.js'
 
@@ -351,6 +352,7 @@ const run = () => {
   })
 
   startButton.onclick = () => {
+    Audio.instance.mute()
     if (!game) {
       createMenu(startLevel, gotoMainMenu)
       menuItemSelected = 0
