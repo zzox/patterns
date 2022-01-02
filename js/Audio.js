@@ -1,4 +1,4 @@
-const FADE_TIME = 20
+const FADE_TIME = 0.1
 
 class Audio {
   constructor () {
@@ -6,6 +6,7 @@ class Audio {
     this.audioCtx = new AudioContext()
     this.gainNode = this.audioCtx.createGain()
     this.gainNode.connect(this.audioCtx.destination)
+    this.gainNode.gain.value = 0
     this.muted = true
 
     this.addSound('C1')
@@ -53,10 +54,10 @@ class Audio {
 
   mute () {
     this.muted = !this.muted
-    if (this.muted) {
+    if (!this.muted) {
       this.audioCtx.resume()
     }
-    this.gainNode.gain.linearRampToValueAtTime(this.muted ? 0 : 1, this.audioCtx.currentTime + FADE_TIME)
+    this.gainNode.gain.linearRampToValueAtTime(this.muted ? 0.0 : 1.0, this.audioCtx.currentTime + FADE_TIME)
   }
 }
 

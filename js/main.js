@@ -19,6 +19,7 @@ const challengeForm = gebi('challenge-form')
 const errorTextElement = gebi('challenge-error')
 const aboutButton = gebi('about-game')
 const aboutBackButton = gebi('about-back')
+const muteButton = gebi('mute')
 
 let game, keyListener
 let menuItemSelected = null
@@ -352,7 +353,6 @@ const run = () => {
   })
 
   startButton.onclick = () => {
-    Audio.instance.mute()
     if (!game) {
       createMenu(startLevel, gotoMainMenu)
       menuItemSelected = 0
@@ -408,6 +408,12 @@ const run = () => {
   aboutBackButton.onclick = () => {
     hideElement(aboutElement)
     gotoMainMenu()
+  }
+
+  muteButton.onclick = () => {
+    Audio.instance.mute()
+    Array.from(muteButton.children)[0].style.display = Audio.instance.muted ? 'inherit' : 'none'
+    Array.from(muteButton.children)[1].style.display = Audio.instance.muted ? 'none' : 'inherit'
   }
 }
 

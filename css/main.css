@@ -31,6 +31,7 @@ body {
   justify-content: center;
   height: var(--view-height);
   scrollbar-width: none;
+  position: relative;
 }
 
 .container::-webkit-scrollbar {
@@ -334,4 +335,23 @@ input {
 
 .challenge-link {
   width: 100%;
+}
+
+#hud {
+  position: absolute;
+}
+
+#mute {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 999;
+  cursor: pointer;
+  width: 5vh;
+}
+
+#mute > img {
+  width: 5vh;
+  height: 5vh;
+  color: var(--text-color);
 }
