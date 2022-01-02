@@ -355,3 +355,9 @@ input {
   height: 5vh;
   color: var(--text-color);
 }
+
+@media only screen and (max-width: 512px) {
+  #mute {
+    top: 5rem;
+  }
+}
