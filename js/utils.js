@@ -15,10 +15,11 @@ export const removeChildElements = (element) => {
   Array.from(element.children).forEach((el) => el.remove())
 }
 
-export const showModal = (title, subtext = '', buttons = []) => {
+export const showModal = (title, subtext = '', message = '', buttons = []) => {
   removeChildElements(modalButtons)
   modalElement.children[0].innerText = title
   modalElement.children[1].innerHTML = subtext
+  modalElement.children[2].innerHTML = message
   showElement(modalElement)
 
   buttons.forEach(({ label, callback }) => {
