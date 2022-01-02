@@ -11,6 +11,10 @@
   --one-sixteenth-height: calc(var(--view-height) / 16);
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 * {
   touch-action: manipulation;
 }
@@ -319,10 +323,6 @@ input {
 }
 
 @media only screen and (max-width: 512px) {
-  #create-challenge-back {
-    top: 5rem;
-  }
-
   .back-button {
     margin-top: 5rem;
   }
