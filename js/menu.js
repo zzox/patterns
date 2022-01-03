@@ -130,10 +130,6 @@ export const createChallengeMenu = (callback, createChallengeCallback, returnCal
     div.appendChild(copyButton)
     div.appendChild(copyLink)
 
-    div.appendChild(leftDiv)
-    div.appendChild(rightDiv)
-    div.appendChild(copyButton)
-
     leftDiv.appendChild(title)
     leftDiv.appendChild(best)
     rightDiv.appendChild(limit)
