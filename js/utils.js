@@ -50,7 +50,7 @@ export const hideElement = async (element) => {
 }
 
 export const assembleChallengeUrl = ({ name, limit, pattern, repetitions }) => {
-  const queryParams = new URLSearchParams()
+  const queryParams = new URLSearchParams(window.location.search)
   queryParams.append('name', name)
   queryParams.append('limit', limit)
   queryParams.append('pattern', pattern.join(''))
