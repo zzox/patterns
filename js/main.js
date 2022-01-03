@@ -263,10 +263,12 @@ const checkChallengeUrl = () => {
 
     const existingIndex = State.instance.challenges.findIndex((challenge) =>
       name === challenge.name &&
-      pattern === challenge.pattern &&
+      JSON.stringify(pattern) === JSON.stringify(challenge.pattern) &&
       limit === challenge.limit &&
       repetitions === challenge.repetitions
     )
+
+    hideElement(startMenu)
 
     if (existingIndex === -1) {
       State.instance.addChallenge({ name, pattern, limit, repetitions })
