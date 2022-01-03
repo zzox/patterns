@@ -115,6 +115,21 @@ export const createChallengeMenu = (callback, createChallengeCallback, returnCal
       })
     }
 
+    copyButton.innerText = 'Copy Challenge Link'
+    copyButton.onclick = (event) => {
+      event.stopPropagation()
+      navigator.clipboard.writeText(link).then(() => {
+        copyButton.innerText = 'Copied!'
+      })
+    }
+    copyButton.innerText = 'Challenge Link'
+    copyLink.appendChild(copyButton)
+
+    div.appendChild(leftDiv)
+    div.appendChild(rightDiv)
+    div.appendChild(copyButton)
+    div.appendChild(copyLink)
+
     div.appendChild(leftDiv)
     div.appendChild(rightDiv)
     div.appendChild(copyButton)
