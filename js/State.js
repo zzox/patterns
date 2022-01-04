@@ -45,10 +45,14 @@ class State {
   }
 
   serialize () {
-    localStorage.setItem(patternsToken, JSON.stringify({
-      completedLevels: this.completedLevels,
-      challenges: this.challenges
-    }))
+    try {
+      localStorage.setItem(patternsToken, JSON.stringify({
+        completedLevels: this.completedLevels,
+        challenges: this.challenges
+      }))
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   deserialize () {
