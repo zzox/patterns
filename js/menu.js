@@ -105,29 +105,17 @@ export const createChallengeMenu = (callback, createChallengeCallback, returnCal
 
     const link = assembleChallengeUrl(challenge)
 
+    const copyLink = document.createElement('a')
+    copyLink.href = link
+    copyLink.rel = 'noopener noreferrer'
+    copyLink.target = '_blank'
     const copyButton = document.createElement('button')
     copyButton.classList.add('challenge-link')
-    copyButton.innerText = 'Copy Challenge Link'
-    copyButton.onclick = (event) => {
-      event.stopPropagation()
-      navigator.clipboard.writeText(link).then(() => {
-        copyButton.innerText = 'Copied!'
-      })
-    }
-
-    copyButton.innerText = 'Copy Challenge Link'
-    copyButton.onclick = (event) => {
-      event.stopPropagation()
-      navigator.clipboard.writeText(link).then(() => {
-        copyButton.innerText = 'Copied!'
-      })
-    }
     copyButton.innerText = 'Challenge Link'
     copyLink.appendChild(copyButton)
 
     div.appendChild(leftDiv)
     div.appendChild(rightDiv)
-    div.appendChild(copyButton)
     div.appendChild(copyLink)
 
     leftDiv.appendChild(title)
