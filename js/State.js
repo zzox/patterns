@@ -56,9 +56,14 @@ class State {
   }
 
   deserialize () {
-    let storage = localStorage.getItem(patternsToken)
-    const exists = storage != null
-    storage = JSON.parse(storage)
+    let storage, exists = false
+    try {
+      storage = localStorage.getItem(patternsToken)
+      exists = storage != null
+      storage = JSON.parse(storage)
+    } catch (e) {
+      console.warn(e)
+    }
 
     this.completedLevels = exists ? storage.completedLevels : []
     this.challenges = exists ? storage.challenges : []
