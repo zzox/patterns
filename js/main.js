@@ -323,7 +323,7 @@ const run = () => {
     if (event.repeat) return
 
     try {
-      game.keyPressed(key)
+      game.keyPressed(key.toLocaleLowerCase())
     } catch (e) {}
   })
 
