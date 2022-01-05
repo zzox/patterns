@@ -47,8 +47,8 @@ const removeListener = () => {
 }
 
 const keydownListener = (restartCallback, escapeCallback, nextCallback) => (event) => {
-  switch (event.key) {
-    case 'Enter':
+  switch (event.key.toLocaleLowerCase()) {
+    case 'enter':
       if (nextCallback) {
         nextCallback()
       } else {
