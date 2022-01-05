@@ -64,7 +64,7 @@ const keydownListener = (restartCallback, escapeCallback, nextCallback) => (even
       restartCallback()
       break
     case 'q':
-    case 'Escape':
+    case 'escape':
       escapeCallback()
       break
     default: break
