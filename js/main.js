@@ -329,7 +329,7 @@ const run = () => {
 
   document.addEventListener('keyup', (event) => {
     try {
-      game.keyReleased(event.key)
+      game.keyReleased(event.key.toLocaleLowerCase())
     } catch (e) {}
   })
 
